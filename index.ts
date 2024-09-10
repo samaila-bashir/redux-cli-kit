@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import { program } from "commander";
-import fs from "fs-extra"; // Import fs-extra
-import path from "path"; // Import path
-import chalk from "chalk"; // Import chalk
-import { setupRedux } from "./src/setupRedux.js"; // Import only once
-import { generateSliceAndSaga } from "./src/generateSliceSaga.js"; // Import only once
+import fs from "fs-extra";
+import path from "path";
+import chalk from "chalk";
+import { setupRedux } from "./src/setupRedux.js";
+import { generateSliceAndSaga } from "./src/generateSliceSaga.js";
 
 // "init" command for Redux setup
 program
@@ -13,7 +13,7 @@ program
   .description("Set up Redux, slices, saga or thunk, and store configuration")
   .option("--saga", "Include Redux Saga in the setup")
   .option("--thunk", "Include Redux Thunk in the setup")
-  .action(async (options) => {
+  .action(async (options: { saga: boolean; thunk: boolean }) => {
     await setupRedux(options);
   });
 
@@ -21,7 +21,7 @@ program
 program
   .command("generate <model>")
   .description("Generate a new Redux slice and saga for a model")
-  .action(async (model) => {
+  .action(async (model: string) => {
     await generateSliceAndSaga(model);
   });
 
