@@ -1,7 +1,7 @@
 export function generateStoreConfig(middleware: string): string {
   return `
   import { configureStore } from '@reduxjs/toolkit';
-  import { rootReducer } from './slices';
+  import rootReducer from './slices';
   import { persistStore, persistReducer } from 'redux-persist';
   import storage from 'redux-persist/lib/storage';
   ${

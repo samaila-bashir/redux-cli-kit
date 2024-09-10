@@ -6,6 +6,9 @@ import chalk from "chalk";
 import { generateTodoSlice } from "./templates/todoSliceTemplate.js";
 import { generateTodoSaga } from "./templates/todoSagaTemplate.js";
 import { generateStoreConfig } from "./templates/storeConfigTemplate.js";
+import { generateRootReducer } from "./templates/rootReducerTemplate.js";
+import { generateRootSaga } from "./templates/rootSagaTemplate.js";
+import { generateSagaActions } from "./templates/sagaActionsTemplate.js";
 
 interface SetupOptions {
   saga?: boolean;
@@ -28,7 +31,7 @@ async function chooseMiddleware(): Promise<string> {
 
 // Function to install Redux and dependencies based on user choice
 async function installDependencies(middleware: string): Promise<void> {
-  const basePackages = ["redux", "@reduxjs/toolkit", "redux-persist"];
+  const basePackages = ["redux", "@reduxjs/toolkit", "redux-persist", "axios"];
   const middlewarePackage =
     middleware === "thunk" ? "redux-thunk" : "redux-saga";
 
@@ -43,19 +46,35 @@ async function installDependencies(middleware: string): Promise<void> {
 // Function to create the Redux store structure and configuration files
 async function createStoreStructure(middleware: string): Promise<void> {
   const srcDir = path.join(process.cwd(), "src/store");
-  const slicesDir = path.join(srcDir, "slices/todos");
-  const sagasDir = path.join(srcDir, "sagas/todos");
+  const slicesDir = path.join(srcDir, "slices");
+  const sagasDir = path.join(srcDir, "sagas");
 
-  // Ensure directories are created afresh
-  await fs.ensureDir(slicesDir);
-  await fs.ensureDir(sagasDir);
+  // Ensure the slices and sagas directories are created
+  await fs.ensureDir(path.join(slicesDir, "todos"));
+  await fs.ensureDir(path.join(sagasDir, "todos"));
 
-  // Create a sample slice and saga for a todo model
-  await fs.writeFile(path.join(slicesDir, "index.ts"), generateTodoSlice());
+  // Create a sample slice for the todo model
   await fs.writeFile(
-    path.join(sagasDir, "index.ts"),
+    path.join(slicesDir, "todos", "index.ts"),
+    generateTodoSlice()
+  );
+
+  // Create a sample saga for the todo model
+  await fs.writeFile(
+    path.join(sagasDir, "todos", "index.ts"),
     generateTodoSaga(middleware)
   );
+
+  // Create the root reducer combining all slices
+  await fs.writeFile(path.join(slicesDir, "index.ts"), generateRootReducer());
+
+  // Create the root saga combining all sagas
+  await fs.writeFile(path.join(sagasDir, "index.ts"), generateRootSaga());
+
+  // Create the actions directory inside sagas, with a sample enum action file
+  const actionsDir = path.join(sagasDir, "actions");
+  await fs.ensureDir(actionsDir);
+  await fs.writeFile(path.join(actionsDir, "index.ts"), generateSagaActions());
 
   // Create the store configuration file
   await fs.writeFile(
