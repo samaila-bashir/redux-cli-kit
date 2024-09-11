@@ -1,7 +1,7 @@
 {
   "name": "redux-cli-kit",
   "version": "1.0.0",
-  "description": "",
+  "description": "Redux CLI Kit is a command-line tool that simplifies Redux store configuration in React projects with TypeScript, offering easy integration of Redux Saga or Redux Thunk, automatic slice and saga generation, and a structured store setup.",
   "main": "index.js",
   "type": "module",
   "bin": {
