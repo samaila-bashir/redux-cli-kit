@@ -1,18 +1,26 @@
 export function generateTodoCSSModule() {
     return `
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
   .container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
     background-color: #f4f4f9;
+    min-height: 100vh; 
     padding: 20px;
-    border-radius: 8px;
+    box-sizing: border-box;
   }
   
   .welcome {
     text-align: center;
     margin-bottom: 20px;
+    width: 45%;
+    line-height: 1.7;
   }
   
   .welcome h1 {
@@ -35,6 +43,21 @@ export function generateTodoCSSModule() {
   
   h2 {
     margin-bottom: 10px;
+  }
+
+  .form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 150px; 
   }
   
   .input {
@@ -81,6 +104,22 @@ export function generateTodoCSSModule() {
   
   .todoItem button {
     margin-left: 10px;
+  }
+
+  .footer {
+    margin-top: 20px;
+    font-size: 14px;
+    align-self: flex-end; /* Push footer to the bottom */
+  }
+
+  .footer a {
+    margin-left: 10px;
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
   }
     `;
 }

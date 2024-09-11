@@ -12,12 +12,19 @@ program
     .action(async (options) => {
     await setupRedux(options);
 });
-// "generate" command for creating slices and sagas
+// "generate" command for creating slices and sagas or thunks
 program
     .command("generate <model>")
-    .description("Generate a new Redux slice and saga for a model")
-    .action(async (model) => {
-    await generateSliceAndSaga(model);
+    .description("Generate a new Redux slice (and optionally saga if Saga is used) for a model")
+    .option("--saga", "Generate a saga for the model (if Saga is being used)")
+    .option("--thunk", "Generate a thunk for the model (if Thunk is being used)")
+    .action(async (model, options) => {
+    const middleware = options.saga
+        ? "saga"
+        : options.thunk
+            ? "thunk"
+            : "saga"; // default to saga if not specified
+    await generateSliceAndSaga(model, middleware);
 });
 // "reset" command for cleaning up the store directory and uninstalling node modules
 program

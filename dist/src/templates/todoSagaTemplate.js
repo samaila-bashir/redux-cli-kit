@@ -22,13 +22,13 @@ interface ITodoResponse {
   completed: boolean;
 }
 
-// Worker saga for fetching todos (limit to 10)
+// Worker saga for fetching todos (limit to 5)
 function* fetchAllTodos(action: { type: string }): Generator<any, void, AxiosResponse<ITodoResponse[]>> {
   try {
     yield put(fetchTodos());
 
     // Fetch todos from JSONPlaceholder and limit the result to 10
-    const response = yield call(axios.get, 'https://jsonplaceholder.typicode.com/todos?_limit=10');
+    const response = yield call(axios.get, 'https://jsonplaceholder.typicode.com/todos?_limit=5');
     yield put(fetchTodosSuccess(response.data));
   } catch (error: any) {
     yield put(fetchTodosFailure(error.message));

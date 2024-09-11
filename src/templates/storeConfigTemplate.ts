@@ -10,28 +10,35 @@ export function generateStoreConfig(middleware: string): string {
       : ""
   }
   
-  const sagaMiddleware = ${
-    middleware === "saga" ? "createSagaMiddleware();" : "null;"
-  }
-  
   const persistConfig = {
     key: 'root',
     storage,
   };
-  
+
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-  
+
+  ${
+    middleware === "saga"
+      ? `const sagaMiddleware = createSagaMiddleware();`
+      : ""
+  }
+
   export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false })${
-        middleware === "saga" ? ".concat(sagaMiddleware)" : ""
+      ${
+        middleware === "saga"
+          ? `getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(sagaMiddleware)`
+          : `getDefaultMiddleware({ serializableCheck: false })`
       },
   });
-  
+
   export const persistor = persistStore(store);
   ${middleware === "saga" ? "sagaMiddleware.run(rootSaga);" : ""}
 
   export type RootState = ReturnType<typeof rootReducer>;
-    `;
+  export type AppDispatch = typeof store.dispatch;
+  `;
 }

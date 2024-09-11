@@ -55,36 +55,43 @@ async function installDependencies(middleware: string): Promise<void> {
 async function createStoreStructure(middleware: string): Promise<void> {
   const srcDir = path.join(process.cwd(), "src/store");
   const slicesDir = path.join(srcDir, "slices");
-  const sagasDir = path.join(srcDir, "sagas");
   const todosDir = path.join(srcDir, "../todos");
 
-  // Ensure the slices, sagas, and todos directories are created
+  // Ensure the slices and todos directories are created
   await fs.ensureDir(path.join(slicesDir, "todos"));
-  await fs.ensureDir(path.join(sagasDir, "todos"));
   await fs.ensureDir(todosDir);
 
-  // Create a sample slice for the todo model
+  // Create a sample slice for the todo model, passing the middleware flag
   await fs.writeFile(
     path.join(slicesDir, "todos", "index.ts"),
-    generateTodoSlice()
+    generateTodoSlice(middleware)
   );
 
-  // Create a sample saga for the todo model
-  await fs.writeFile(
-    path.join(sagasDir, "todos", "index.ts"),
-    generateTodoSaga(middleware)
-  );
+  // Create sagas only if Saga is chosen
+  if (middleware === "saga") {
+    const sagasDir = path.join(srcDir, "sagas");
+    await fs.ensureDir(path.join(sagasDir, "todos"));
+
+    // Create a sample saga for the todo model
+    await fs.writeFile(
+      path.join(sagasDir, "todos", "index.ts"),
+      generateTodoSaga(middleware)
+    );
+
+    // Create the root saga combining all sagas
+    await fs.writeFile(path.join(sagasDir, "index.ts"), generateRootSaga());
+
+    // Create the actions directory inside sagas
+    const actionsDir = path.join(sagasDir, "actions");
+    await fs.ensureDir(actionsDir);
+    await fs.writeFile(
+      path.join(actionsDir, "index.ts"),
+      generateSagaActions()
+    );
+  }
 
   // Create the root reducer combining all slices
   await fs.writeFile(path.join(slicesDir, "index.ts"), generateRootReducer());
-
-  // Create the root saga combining all sagas
-  await fs.writeFile(path.join(sagasDir, "index.ts"), generateRootSaga());
-
-  // Create the actions directory inside sagas, with a sample enum action file
-  const actionsDir = path.join(sagasDir, "actions");
-  await fs.ensureDir(actionsDir);
-  await fs.writeFile(path.join(actionsDir, "index.ts"), generateSagaActions());
 
   // Create the store configuration file
   await fs.writeFile(
@@ -93,8 +100,10 @@ async function createStoreStructure(middleware: string): Promise<void> {
   );
 
   // Create the Todo component and corresponding CSS module
-  await fs.writeFile(path.join(todosDir, "index.tsx"), generateTodoComponent());
-
+  await fs.writeFile(
+    path.join(todosDir, "index.tsx"),
+    generateTodoComponent(middleware)
+  );
   await fs.writeFile(
     path.join(todosDir, "TodoComponent.module.css"),
     generateTodoCSSModule()
