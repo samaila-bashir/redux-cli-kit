@@ -9,6 +9,8 @@ import { generateStoreConfig } from "./templates/storeConfigTemplate.js";
 import { generateRootReducer } from "./templates/rootReducerTemplate.js";
 import { generateRootSaga } from "./templates/rootSagaTemplate.js";
 import { generateSagaActions } from "./templates/sagaActionsTemplate.js";
+import { generateTodoComponent } from "./templates/todoComponentTemplate.js";
+import { generateTodoCSSModule } from "./templates/todoComponentCSSTemplate.js";
 
 interface SetupOptions {
   saga?: boolean;
@@ -22,16 +24,22 @@ async function chooseMiddleware(): Promise<string> {
       type: "list",
       name: "middleware",
       message: "Which middleware would you like to use?",
-      choices: ["Redux Thunk", "Redux Saga"],
+      choices: ["Redux Saga", "Redux Thunk"],
     },
   ]);
 
-  return middleware === "Redux Thunk" ? "thunk" : "saga";
+  return middleware === "Redux Saga" ? "saga" : "thunk";
 }
 
 // Function to install Redux and dependencies based on user choice
 async function installDependencies(middleware: string): Promise<void> {
-  const basePackages = ["redux", "@reduxjs/toolkit", "redux-persist", "axios"];
+  const basePackages = [
+    "redux",
+    "@reduxjs/toolkit",
+    "redux-persist",
+    "react-redux",
+    "axios",
+  ];
   const middlewarePackage =
     middleware === "thunk" ? "redux-thunk" : "redux-saga";
 
@@ -48,10 +56,12 @@ async function createStoreStructure(middleware: string): Promise<void> {
   const srcDir = path.join(process.cwd(), "src/store");
   const slicesDir = path.join(srcDir, "slices");
   const sagasDir = path.join(srcDir, "sagas");
+  const todosDir = path.join(srcDir, "../todos");
 
-  // Ensure the slices and sagas directories are created
+  // Ensure the slices, sagas, and todos directories are created
   await fs.ensureDir(path.join(slicesDir, "todos"));
   await fs.ensureDir(path.join(sagasDir, "todos"));
+  await fs.ensureDir(todosDir);
 
   // Create a sample slice for the todo model
   await fs.writeFile(
@@ -82,17 +92,40 @@ async function createStoreStructure(middleware: string): Promise<void> {
     generateStoreConfig(middleware)
   );
 
+  // Create the Todo component and corresponding CSS module
+  await fs.writeFile(path.join(todosDir, "index.tsx"), generateTodoComponent());
+
+  await fs.writeFile(
+    path.join(todosDir, "TodoComponent.module.css"),
+    generateTodoCSSModule()
+  );
+
   console.log(chalk.green("Redux store setup complete!"));
 }
 
 // Initial setup function for the CLI command
 export async function setupRedux(options: SetupOptions): Promise<void> {
-  const middleware = options.saga
-    ? "saga"
-    : options.thunk
-    ? "thunk"
-    : await chooseMiddleware();
+  let middleware = "";
 
-  await installDependencies(middleware);
-  await createStoreStructure(middleware);
+  try {
+    // Check if saga or thunk option is provided
+    if (options.saga) {
+      middleware = "saga";
+    } else if (options.thunk) {
+      middleware = "thunk";
+    } else {
+      // Prompt for middleware choice if neither --saga nor --thunk is provided
+      middleware = await chooseMiddleware();
+    }
+
+    await installDependencies(middleware);
+    await createStoreStructure(middleware);
+  } catch (error: any) {
+    if (error.message.includes("User force closed the prompt")) {
+      console.log(chalk.yellow("Process interrupted. Exiting..."));
+      process.exit(0);
+    } else {
+      console.error(chalk.red("An error occurred:"), error.message);
+    }
+  }
 }

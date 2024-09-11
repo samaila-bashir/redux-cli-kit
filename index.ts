@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
 import { program } from "commander";
-import fs from "fs-extra";
-import path from "path";
-import chalk from "chalk";
 import { setupRedux } from "./src/setupRedux.js";
 import { generateSliceAndSaga } from "./src/generateSliceSaga.js";
+import { resetProject } from "./src/utilities/helpers/resetProject.js";
 
 // "init" command for Redux setup
 program
@@ -25,20 +23,14 @@ program
     await generateSliceAndSaga(model);
   });
 
-// "reset" command for cleaning up the store directory
+// "reset" command for cleaning up the store directory and uninstalling node modules
 program
   .command("reset")
-  .description("Clean up the existing store structure")
+  .description(
+    "Clean up the existing store structure and uninstall installed node modules"
+  )
   .action(async () => {
-    const srcDir = path.join(process.cwd(), "src/store");
-
-    if (await fs.pathExists(srcDir)) {
-      console.log(chalk.yellow("Cleaning up the store directory..."));
-      await fs.remove(srcDir);
-      console.log(chalk.green("Store directory has been cleaned up!"));
-    } else {
-      console.log(chalk.blue("No existing store directory to clean."));
-    }
+    await resetProject();
   });
 
 program.parse(process.argv);

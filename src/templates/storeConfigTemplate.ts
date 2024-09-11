@@ -31,5 +31,7 @@ export function generateStoreConfig(middleware: string): string {
   
   export const persistor = persistStore(store);
   ${middleware === "saga" ? "sagaMiddleware.run(rootSaga);" : ""}
+
+  export type RootState = ReturnType<typeof rootReducer>;
     `;
 }
