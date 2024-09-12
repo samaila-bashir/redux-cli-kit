@@ -2,9 +2,9 @@ export function generateTodoSlice(middleware: string): string {
   return `
   import { createSlice, PayloadAction } from '@reduxjs/toolkit';
   ${
-    middleware === "thunk"
+    middleware === 'thunk'
       ? "import { createAsyncThunk } from '@reduxjs/toolkit';\nimport axios from 'axios';"
-      : ""
+      : ''
   }
   
   interface Todo {
@@ -26,7 +26,7 @@ export function generateTodoSlice(middleware: string): string {
   };
 
   ${
-    middleware === "thunk"
+    middleware === 'thunk'
       ? `
   // Thunks for API calls when using Thunk middleware
   export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
@@ -49,7 +49,7 @@ export function generateTodoSlice(middleware: string): string {
     return id;
   });
   `
-      : ""
+      : ''
   }
   
   const todosSlice = createSlice({
@@ -57,23 +57,23 @@ export function generateTodoSlice(middleware: string): string {
     initialState,
     reducers: {
       ${
-        middleware === "thunk"
-          ? ""
+        middleware === 'thunk'
+          ? ''
           : `fetchTodos: (state) => { state.loading = true; },`
       }
       ${
-        middleware === "thunk"
-          ? ""
+        middleware === 'thunk'
+          ? ''
           : `fetchTodosSuccess: (state, action: PayloadAction<Todo[]>) => { state.loading = false; state.todos = action.payload; },`
       }
       ${
-        middleware === "thunk"
-          ? ""
+        middleware === 'thunk'
+          ? ''
           : `fetchTodosFailure: (state, action: PayloadAction<string>) => { state.loading = false; state.error = action.payload; },`
       }
       ${
-        middleware === "thunk"
-          ? ""
+        middleware === 'thunk'
+          ? ''
           : `
       addTodo: (state, action: PayloadAction<Todo>) => {
         state.todos.push(action.payload);
@@ -92,7 +92,7 @@ export function generateTodoSlice(middleware: string): string {
     },
     extraReducers: (builder) => {
       ${
-        middleware === "thunk"
+        middleware === 'thunk'
           ? `builder.addCase(fetchTodos.pending, (state) => { state.loading = true; })
         .addCase(fetchTodos.fulfilled, (state, action) => { state.loading = false; state.todos = action.payload; })
         .addCase(fetchTodos.rejected, (state, action) => { state.loading = false; state.error = action.error.message || 'Failed to fetch todos'; })
@@ -106,15 +106,15 @@ export function generateTodoSlice(middleware: string): string {
         .addCase(deleteTodo.fulfilled, (state, action) => {
           state.todos = state.todos.filter(todo => todo.id !== action.payload);
         });`
-          : ""
+          : ''
       }
     },
   });
   
   export const { ${
-    middleware === "thunk"
-      ? ""
-      : "fetchTodos, fetchTodosSuccess, fetchTodosFailure, addTodo, updateTodo, deleteTodo"
+    middleware === 'thunk'
+      ? ''
+      : 'fetchTodos, fetchTodosSuccess, fetchTodosFailure, addTodo, updateTodo, deleteTodo'
   } } = todosSlice.actions;
   export default todosSlice.reducer;
   `;

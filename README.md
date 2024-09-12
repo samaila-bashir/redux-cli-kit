@@ -24,12 +24,14 @@ StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplif
 
 StateEngine CLI Kit comes with three primary commands to help you set up and manage your your choice of state management library with ease.
 
-### 1. `sec init`
+> 🟢 `seck`or **SECK** is an acronym for State Engine CLI Kit
+
+### 1. `seck init`
 
 The `init` command is the starting point of the setup process. This command allows you to configure your your choice of library or framework and the state management library you prefer.
 
 ```bash
-sec init
+seck init
 ```
 
 **Options**:
@@ -46,12 +48,12 @@ Additionally, it generates:
 - A sample `TodoComponent` with a basic UI and Redux integration.
 - A corresponding CSS Module for styling the component.
 
-### 2. `sec generate <model>`
+### 2. `seck generate <model>`
 
 The `generate` command allows you to create additional Redux slices and sagas for new models, which helps in extending the store for new features or entities.
 
 ```bash
-sec generate users
+seck generate users
 ```
 
 This command:
@@ -61,12 +63,12 @@ This command:
 - Adds the newly created saga to the root saga.
 - Includes a sample CRUD configuration for the new model.
 
-### 3. `sec reset`
+### 3. `seck reset`
 
 The `reset` command cleans up the existing store structure and removes all installed node modules related to Redux (including Thunk or Saga).
 
 ```bash
-sec reset
+seck reset
 ```
 
 This command:
@@ -91,25 +93,25 @@ StateEngine CLI Kit is built with TypeScript in mind. It generates TypeScript fi
 **Initialize Redux Store with Saga**:
 
 ```bash
-sec init --saga
+seck init --saga
 ```
 
 **Initialize Redux Store with Thunk**:
 
 ```bash
-sec init --thunk
+seck init --thunk
 ```
 
 **Generate a New Model (e.g., Users)**:
 
 ```bash
-sec generate users
+seck generate users
 ```
 
 **Reset the Redux Store**:
 
 ```bash
-sec reset
+seck reset
 ```
 
 ## Setting Up the Redux Provider
@@ -117,12 +119,12 @@ sec reset
 Once you have initialized state-engine-cli-kit and your Redux store is configured, you'll need to update your main entry point (`index.tsx` for Create React App or `main.tsx` for Vite) with the following configuration:
 
 ```tsx
-import { Provider } from "react-redux";
-import { persistor, store } from "./store";
-import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from 'react-redux';
+import { persistor, store } from './store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById('root') as HTMLElement
 );
 
 root.render(
@@ -144,8 +146,8 @@ This will set up the Redux Provider along with PersistGate to ensure state persi
 
 | State Management Library | Supported |
 | ------------------------ | --------- |
-| Redux with Redux Saga    | ✔         |
-| Redux with Redux Thunk   | ✔         |
+| Redux with Redux Saga    | ✔        |
+| Redux with Redux Thunk   | ✔        |
 | React Query              | ⏳        |
 | Zustand                  | ✘         |
 | Jotai                    | ✘         |

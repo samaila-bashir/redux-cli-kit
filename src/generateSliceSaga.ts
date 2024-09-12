@@ -1,8 +1,8 @@
-import fs from "fs-extra";
-import path from "path";
-import chalk from "chalk";
-import { generateTodoSlice } from "./templates/todoSliceTemplate.js";
-import { generateTodoSaga } from "./templates/todoSagaTemplate.js";
+import fs from 'fs-extra';
+import path from 'path';
+import chalk from 'chalk';
+import { generateTodoSlice } from './templates/todoSliceTemplate.js';
+import { generateTodoSaga } from './templates/todoSagaTemplate.js';
 
 // Function to generate a slice and optionally a saga based on user input
 export async function generateSliceAndSaga(
@@ -19,19 +19,19 @@ export async function generateSliceAndSaga(
 
   // Write the slice file using the template
   await fs.writeFile(
-    path.join(sliceDir, "index.ts"),
+    path.join(sliceDir, 'index.ts'),
     generateTodoSlice(middleware)
   );
 
   // Create the saga directory and file only if Saga is chosen
-  if (middleware === "saga") {
+  if (middleware === 'saga') {
     const sagaDir = path.join(
       process.cwd(),
       `src/store/sagas/${modelName.toLowerCase()}`
     );
     await fs.ensureDir(sagaDir);
     await fs.writeFile(
-      path.join(sagaDir, "index.ts"),
+      path.join(sagaDir, 'index.ts'),
       generateTodoSaga(middleware)
     );
 

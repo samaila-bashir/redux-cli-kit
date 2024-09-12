@@ -1,6 +1,6 @@
 export function generateTodoSaga(middleware: string): string {
-  if (middleware === "thunk") {
-    return "";
+  if (middleware === 'thunk') {
+    return '';
   }
   return `
 import { call, put, takeEvery } from 'redux-saga/effects';

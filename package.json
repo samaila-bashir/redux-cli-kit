@@ -5,12 +5,14 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "sec": "dist/index.js"
+    "seck": "dist/index.js"
   },
   "scripts": {
     "build": "npx tsc",
     "watch": "npx tsc --watch",
-    "relink": "npm unlink -g && npm link"
+    "relink": "npm unlink -g && npm link",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "Samaila Chatto Bashir <developer.chatto@gmail.com>",
@@ -23,13 +25,21 @@
     "inquirer": "^10.2.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.10.0",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
     "@types/execa": "^2.0.0",
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^22.5.4",
-    "typescript": "^5.6.2"
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.36.0",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.5.0"
   },
   "repository": {
     "type": "git",

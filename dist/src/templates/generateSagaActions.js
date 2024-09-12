@@ -1,5 +1,5 @@
 export function generateSagaActions() {
-    return `
+  return `
   export enum TODO_SAGA_ACTIONS {
     FETCH_TODOS = 'FETCH_TODOS',
     ADD_TODO = 'ADD_TODO',
