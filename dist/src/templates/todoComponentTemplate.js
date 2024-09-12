@@ -73,8 +73,8 @@ export function generateTodoComponent(middleware) {
         <div className={styles.welcome}>
           <h1>Hurray! 🥳🎉</h1>
           <p>
-            You have successfully configured your project with Redux and ${middleware === "thunk" ? "Redux Thunk" : "Redux Saga"} using <strong>Redux CLI Kit</strong>. If you love this package, kindly give it a star on 
-            <a href="https://github.com/samaila-bashir/redux-cli-kit" target="_blank" rel="noopener noreferrer"> GitHub</a>.
+            You have successfully configured your project with Redux and ${middleware === "thunk" ? "Redux Thunk" : "Redux Saga"} using <strong>StateEngine CLI Kit</strong>. If you love this package, kindly give it a star on 
+            <a href="https://github.com/samaila-bashir/state-engine-cli-kit" target="_blank" rel="noopener noreferrer"> GitHub</a>.
             We are open to new contributions 🤗. 
           </p>
         </div>

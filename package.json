@@ -1,7 +1,7 @@
 {
-  "name": "redux-cli-kit",
+  "name": "state-engine-cli-kit",
   "version": "1.0.0",
-  "description": "Redux CLI Kit is a command-line tool that simplifies Redux store configuration in React projects with TypeScript, offering easy integration of Redux Saga or Redux Thunk, automatic slice and saga generation, and a structured store setup.",
+  "description": "StateEngine CLI Kit is a powerful command-line tool for configuring state management in any frontend library or framework configured with TypeScript, reducing repetitive tasks.",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -33,6 +33,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/samaila-bashir/redux-cli-kit.git"
+    "url": "git+https://github.com/samaila-bashir/state-engine-cli-kit.git"
   }
 }
