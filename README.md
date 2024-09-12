@@ -146,7 +146,7 @@ This will set up the Redux Provider along with PersistGate to ensure state persi
 | ------------------------ | --------- |
 | Redux with Redux Saga    | ✔         |
 | Redux with Redux Thunk   | ✔         |
-| React Query              | ✘         |
+| React Query              | ⏳        |
 | Zustand                  | ✘         |
 | Jotai                    | ✘         |
 

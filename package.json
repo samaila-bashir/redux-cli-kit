@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "rck": "dist/index.js"
+    "sec": "dist/index.js"
   },
   "scripts": {
     "build": "npx tsc",
