@@ -20,7 +20,7 @@ StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplif
 - **TypeScript Support**: Specifically designed for any frontend framework, such as React, Vue, Angular, Svelte, and others built with TypeScript.
 - **Cleaner Project Organization**: Automatically separates concerns with a clear folder structure for your choice of state management library.
 
-🟢 _Note: These features are highlited based on the current progress of the project which is mostly focused on React JS setup using Redux with middlewares like Redux Saga or Redux Thunk_
+🟢 _Note: These features are highlited based on the current progress of the project which is mostly focused on React JS setup using Redux with middlewares like Redux Saga or Redux Thunk. As more features are being added e.g libraries, the documentation will be updated accordingly._
 
 ## Commands
 
