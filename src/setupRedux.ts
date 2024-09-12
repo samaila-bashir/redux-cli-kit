@@ -129,6 +129,7 @@ export async function setupRedux(options: SetupOptions): Promise<void> {
 
     await installDependencies(middleware);
     await createStoreStructure(middleware);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.message.includes('User force closed the prompt')) {
       console.log(chalk.yellow('Process interrupted. Exiting...'));
