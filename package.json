@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "rck": "./dist/index.js"
+    "rck": "dist/index.js"
   },
   "scripts": {
     "build": "npx tsc",
@@ -13,7 +13,7 @@
     "relink": "npm unlink -g && npm link"
   },
   "keywords": [],
-  "author": "",
+  "author": "Samaila Chatto Bashir <developer.chatto@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "chalk": "^5.3.0",
@@ -30,5 +30,9 @@
     "@types/inquirer": "^9.0.7",
     "@types/node": "^22.5.4",
     "typescript": "^5.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samaila-bashir/redux-cli-kit.git"
   }
 }
