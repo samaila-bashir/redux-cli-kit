@@ -1,6 +1,6 @@
 # StateEngine CLI Kit
 
-StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplifies setting up your choice of state management library in any frontend framework or library, such as React (e.g. Redux `[Saga or Thunk]`, React Query, Zustand), Vue (Penia or Vuex), Angular (NgRx and Akita), Svelte, and others. This CLI kit is especially designed for any frontend project configured with TypeScript.
+StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplifies setting up your choice of state management library in any frontend framework or library, such as React (e.g. Redux [Saga or Thunk], React Query, Zustand), Vue (Pinia or Vuex), Angular (NgRx and Akita), Svelte, and others. This CLI kit is especially designed for any frontend project configured with TypeScript, helping you to set up a standard project folder structure for your state management. It provides state management setup with configuration files and folders to quickly get started with managing state in your frontend project.
 
 > The vision behind this project is to build a powerful, frontend-agnostic state configuration engine that enables frontend engineers to follow best practices inspired by professional frontend engineers in the industry, enabling easy configuration of state management in any frontend library or framework of your choice in the least possible time, reducing repetitive tasks.
 >
