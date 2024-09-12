@@ -6,11 +6,11 @@ StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplif
 >
 > — [Samaila Chatto Bashir](https://samailabashir.com)
 
-🔴 _Note: This documentation is focused on state management setup on React projects configured with TypeScript, and the state management tool currently available is Redux with the option to use `Redux Saga` or `Redux Thunk`. We will be updating the status table below on the state management options added to the project._
+🔴 _Attention: This documentation is focused on state management setup on React projects configured with TypeScript, and the state management tool currently available is Redux with the option to use `Redux Saga` or `Redux Thunk`. We will be updating the status table below on the state management options added to the project._
 
-#### [View Project Status Table](#stateengine-cli-kit-framework-and-library-support)
+#### [View Status Table](#stateengine-cli-kit-framework-and-library-support)
 
-## Features
+## Features for Version 1.0.0
 
 - **Seamless choice of state management library Setup**: Automatically configures your choice of state management library e.g. Redux with `@reduxjs/toolkit`, `redux-persist`, and other required dependencies for React projects.
 - **Saga or Thunk**: Gives you the choice to set up your Redux store with either `Redux Saga` or `Redux Thunk` for managing asynchronous logic.
@@ -20,11 +20,13 @@ StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplif
 - **TypeScript Support**: Specifically designed for any frontend framework, such as React, Vue, Angular, Svelte, and others built with TypeScript.
 - **Cleaner Project Organization**: Automatically separates concerns with a clear folder structure for your choice of state management library.
 
+🟢 _Note: These features are highlited based on the current progress of the project which is mostly focused on React JS setup using Redux with middlewares like Redux Saga or Redux Thunk_
+
 ## Commands
 
 StateEngine CLI Kit comes with three primary commands to help you set up and manage your your choice of state management library with ease.
 
-> 🟢 `seck`or **SECK** is an acronym for State Engine CLI Kit
+💡 **seck** or **SECK** is an acronym for State Engine CLI Kit
 
 ### 1. `seck init`
 

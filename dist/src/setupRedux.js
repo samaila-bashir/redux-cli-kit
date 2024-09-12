@@ -85,6 +85,7 @@ export async function setupRedux(options) {
         }
         await installDependencies(middleware);
         await createStoreStructure(middleware);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (error) {
         if (error.message.includes('User force closed the prompt')) {
