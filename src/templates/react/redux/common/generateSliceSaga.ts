@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { generateTodoSlice } from './templates/todoSliceTemplate.js';
-import { generateTodoSaga } from './templates/todoSagaTemplate.js';
+import { generateTodoSaga } from '../redux-saga/todoSagaTemplate.js';
+import { generateTodoSliceSaga } from '../redux-saga/todoSliceSagaTemplate.js';
 
 // Function to generate a slice and optionally a saga based on user input
 export async function generateSliceAndSaga(
@@ -18,13 +18,10 @@ export async function generateSliceAndSaga(
   await fs.ensureDir(sliceDir);
 
   // Write the slice file using the template
-  await fs.writeFile(
-    path.join(sliceDir, 'index.ts'),
-    generateTodoSlice(middleware)
-  );
+  await fs.writeFile(path.join(sliceDir, 'index.ts'), generateTodoSliceSaga());
 
   // Create the saga directory and file only if Saga is chosen
-  if (middleware === 'saga') {
+  if (middleware === 'reduxSaga') {
     const sagaDir = path.join(
       process.cwd(),
       `src/store/sagas/${modelName.toLowerCase()}`

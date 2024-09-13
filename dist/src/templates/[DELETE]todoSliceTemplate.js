@@ -1,11 +1,9 @@
-export function generateTodoSlice(middleware: string): string {
-  return `
+export function generateTodoSlice(middleware) {
+    return `
   import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-  ${
-    middleware === 'thunk'
-      ? "import { createAsyncThunk } from '@reduxjs/toolkit';\nimport axios from 'axios';"
-      : ''
-  }
+  ${middleware === 'reduxThunk'
+        ? "import { createAsyncThunk } from '@reduxjs/toolkit';\nimport axios from 'axios';"
+        : ''}
   
   interface Todo {
     id: number;
@@ -25,9 +23,8 @@ export function generateTodoSlice(middleware: string): string {
     error: null,
   };
 
-  ${
-    middleware === 'thunk'
-      ? `
+  ${middleware === 'reduxThunk'
+        ? `
   // Thunks for API calls when using Thunk middleware
   export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
     const response = await axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5');
@@ -49,32 +46,24 @@ export function generateTodoSlice(middleware: string): string {
     return id;
   });
   `
-      : ''
-  }
+        : ''}
   
   const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-      ${
-        middleware === 'thunk'
-          ? ''
-          : `fetchTodos: (state) => { state.loading = true; },`
-      }
-      ${
-        middleware === 'thunk'
-          ? ''
-          : `fetchTodosSuccess: (state, action: PayloadAction<Todo[]>) => { state.loading = false; state.todos = action.payload; },`
-      }
-      ${
-        middleware === 'thunk'
-          ? ''
-          : `fetchTodosFailure: (state, action: PayloadAction<string>) => { state.loading = false; state.error = action.payload; },`
-      }
-      ${
-        middleware === 'thunk'
-          ? ''
-          : `
+      ${middleware === 'reduxThunk'
+        ? ''
+        : `fetchTodos: (state) => { state.loading = true; },`}
+      ${middleware === 'reduxThunk'
+        ? ''
+        : `fetchTodosSuccess: (state, action: PayloadAction<Todo[]>) => { state.loading = false; state.todos = action.payload; },`}
+      ${middleware === 'reduxThunk'
+        ? ''
+        : `fetchTodosFailure: (state, action: PayloadAction<string>) => { state.loading = false; state.error = action.payload; },`}
+      ${middleware === 'reduxThunk'
+        ? ''
+        : `
       addTodo: (state, action: PayloadAction<Todo>) => {
         state.todos.push(action.payload);
       },
@@ -87,13 +76,11 @@ export function generateTodoSlice(middleware: string): string {
       deleteTodo: (state, action: PayloadAction<number>) => {
         state.todos = state.todos.filter(todo => todo.id !== action.payload);
       },
-      `
-      }
+      `}
     },
     extraReducers: (builder) => {
-      ${
-        middleware === 'thunk'
-          ? `builder.addCase(fetchTodos.pending, (state) => { state.loading = true; })
+      ${middleware === 'reduxThunk'
+        ? `builder.addCase(fetchTodos.pending, (state) => { state.loading = true; })
         .addCase(fetchTodos.fulfilled, (state, action) => { state.loading = false; state.todos = action.payload; })
         .addCase(fetchTodos.rejected, (state, action) => { state.loading = false; state.error = action.error.message || 'Failed to fetch todos'; })
         .addCase(addTodo.fulfilled, (state, action) => { state.todos.push(action.payload); })
@@ -106,16 +93,13 @@ export function generateTodoSlice(middleware: string): string {
         .addCase(deleteTodo.fulfilled, (state, action) => {
           state.todos = state.todos.filter(todo => todo.id !== action.payload);
         });`
-          : ''
-      }
+        : ''}
     },
   });
   
-  export const { ${
-    middleware === 'thunk'
-      ? ''
-      : 'fetchTodos, fetchTodosSuccess, fetchTodosFailure, addTodo, updateTodo, deleteTodo'
-  } } = todosSlice.actions;
+  export const { ${middleware === 'reduxThunk'
+        ? ''
+        : 'fetchTodos, fetchTodosSuccess, fetchTodosFailure, addTodo, updateTodo, deleteTodo'} } = todosSlice.actions;
   export default todosSlice.reducer;
   `;
 }

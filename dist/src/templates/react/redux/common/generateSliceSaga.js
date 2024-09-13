@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { generateTodoSaga } from './templates/react/redux/redux-saga/todoSagaTemplate.js';
-import { generateTodoSliceSaga } from './templates/react/redux/redux-saga/todoSliceSagaTemplate.js';
+import { generateTodoSaga } from '../redux-saga/todoSagaTemplate.js';
+import { generateTodoSliceSaga } from '../redux-saga/todoSliceSagaTemplate.js';
 // Function to generate a slice and optionally a saga based on user input
 export async function generateSliceAndSaga(modelName, middleware) {
     const sliceDir = path.join(process.cwd(), `src/store/slices/${modelName.toLowerCase()}`);

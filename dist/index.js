@@ -1,18 +1,15 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { setupRedux } from './src/setupRedux.js';
-import { generateSliceAndSaga } from './src/generateSliceSaga.js';
+import { generateSliceAndSaga } from './src/templates/react/redux/common/generateSliceSaga.js';
 import { resetProject } from './src/utilities/helpers/resetProject.js';
-// "init" command for Redux setup
+import initCommand from './src/utilities/command-actions/initCommand.js';
 program
     .command('init')
-    .description('Set up Redux, slices, saga or thunk, and store configuration')
-    .option('--saga', 'Include Redux Saga in the setup')
-    .option('--thunk', 'Include Redux Thunk in the setup')
-    .action(async (options) => {
-    await setupRedux(options);
+    .description('Set up state management (e.g., Redux with Saga or Thunk) and other configurations.')
+    .action(async () => {
+    await initCommand();
 });
-// "generate" command for creating slices and sagas or thunks
+// Command for generating slices and sagas or thunks
 program
     .command('generate <model>')
     .description('Generate a new Redux slice (and optionally saga if Saga is used) for a model')
@@ -20,13 +17,13 @@ program
     .option('--thunk', 'Generate a thunk for the model (if Thunk is being used)')
     .action(async (model, options) => {
     const middleware = options.saga
-        ? 'saga'
+        ? 'reduxSaga'
         : options.thunk
-            ? 'thunk'
-            : 'saga'; // default to saga if not specified
+            ? 'reduxThunk'
+            : 'reduxSaga'; // default to saga if not specified
     await generateSliceAndSaga(model, middleware);
 });
-// "reset" command for cleaning up the store directory and uninstalling node modules
+// Command for resetting the project
 program
     .command('reset')
     .description('Clean up the existing store structure and uninstall installed node modules')

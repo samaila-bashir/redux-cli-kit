@@ -1,14 +1,12 @@
-export function generateTodoComponent(middleware: string): string {
-  return `
+export function generateTodoComponent(middleware) {
+    return `
   import { useEffect, useState } from 'react';
   import { useDispatch, useSelector, shallowEqual } from 'react-redux';
   import styles from './TodoComponent.module.css';
   import { RootState, AppDispatch } from '../store';
-  ${
-    middleware === 'thunk'
-      ? "import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../store/slices/todos';"
-      : "import { SAGA_ACTIONS } from '../store/sagas/actions';"
-  }
+  ${middleware === 'reduxThunk'
+        ? "import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../store/slices/todos';"
+        : "import { SAGA_ACTIONS } from '../store/sagas/actions';"}
 
   const TodoComponent = () => {
     const dispatch: AppDispatch = useDispatch(); // Use AppDispatch type
@@ -24,58 +22,50 @@ export function generateTodoComponent(middleware: string): string {
     const [newTodo, setNewTodo] = useState('');
 
     useEffect(() => {
-      ${
-        middleware === 'thunk'
-          ? 'dispatch(fetchTodos());'
-          : 'dispatch({ type: SAGA_ACTIONS.FETCH_TODOS });'
-      }
+      ${middleware === 'reduxThunk'
+        ? 'dispatch(fetchTodos());'
+        : 'dispatch({ type: SAGA_ACTIONS.FETCH_TODOS });'}
     }, [dispatch]);
   
     const handleAddTodo = () => {
-      ${
-        middleware === 'thunk'
-          ? `dispatch(addTodo({
+      ${middleware === 'reduxThunk'
+        ? `dispatch(addTodo({
             id: Date.now(),
             title: newTodo,
             completed: false,
           }));`
-          : `dispatch({
+        : `dispatch({
             type: SAGA_ACTIONS.ADD_TODO,
             payload: {
               id: Date.now(),
               title: newTodo,
               completed: false,
             },
-          });`
-      }
+          });`}
       setNewTodo(''); 
     };
 
     const handleUpdateTodo = (id: number) => {
-      ${
-        middleware === 'thunk'
-          ? `dispatch(updateTodo({
+      ${middleware === 'reduxThunk'
+        ? `dispatch(updateTodo({
             id,
             title: 'Updated Todo',
             completed: true,
           }));`
-          : `dispatch({
+        : `dispatch({
             type: SAGA_ACTIONS.UPDATE_TODO,
             payload: {
               id,
               title: 'Updated Todo',
               completed: true,
             },
-          });`
-      }
+          });`}
     };
 
     const handleDeleteTodo = (id: number) => {
-      ${
-        middleware === 'thunk'
-          ? `dispatch(deleteTodo(id));`
-          : `dispatch({ type: SAGA_ACTIONS.DELETE_TODO, payload: id });`
-      }
+      ${middleware === 'reduxThunk'
+        ? `dispatch(deleteTodo(id));`
+        : `dispatch({ type: SAGA_ACTIONS.DELETE_TODO, payload: id });`}
     };
 
     return (
@@ -83,12 +73,10 @@ export function generateTodoComponent(middleware: string): string {
         <div className={styles.welcome}>
           <h1>Hurray! 🥳🎉</h1>
           <p>
-            You have successfully configured your project with Redux and ${
-              middleware === 'thunk' ? 'Redux Thunk' : 'Redux Saga'
-            } using <strong>StateEngine CLI Kit</strong>. If you love this package, kindly give it a star on 
+            You have successfully configured your project with Redux and ${middleware === 'reduxThunk' ? 'Redux Thunk' : 'Redux Saga'} using <strong>StateEngine CLI Kit</strong>. If you love this package, kindly give it a star on 
             <a href="https://github.com/samaila-bashir/state-engine-cli-kit" target="_blank" rel="noopener noreferrer"> GitHub</a>.
-            We are open to new contributions 🤗. 
           </p>
+          <p>We are open to new contributions 🤗.</p>
         </div>
 
         <div className={styles.form}>
