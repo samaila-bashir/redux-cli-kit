@@ -5,7 +5,7 @@ async function initCommand() {
     try {
         const isTypeScriptConfigured = await checkForTypeScript();
         if (!isTypeScriptConfigured) {
-            console.log(chalk.red('This tool works better with projects configured with TypeScript. Please add TypeScript to your project and try again.'));
+            console.log(chalk.yellow('This tool works best with frontend projects configured with TypeScript. Please add TypeScript to your project and try again.'));
             process.exit(1);
         }
         const framework = await chooseFramework();
