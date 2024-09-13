@@ -23,31 +23,41 @@ export async function chooseFramework() {
     ]);
     return framework;
 }
-// Ask the user to choose between Saga or Thunk
-export async function chooseMiddleware() {
-    const { middleware } = await inquirer.prompt([
+export async function chooseStateManagement() {
+    const { stateManagement } = await inquirer.prompt([
         {
             type: 'list',
-            name: 'middleware',
-            message: 'Which middleware would you like to use?',
-            choices: ['Redux Saga', 'Redux Thunk'],
+            name: 'stateManagement',
+            message: 'Which state management setup would you like to configure?',
+            choices: [
+                { name: 'Redux with Redux Saga', value: 'reduxSaga', disabled: false },
+                {
+                    name: 'Redux with Redux Thunk',
+                    value: 'reduxThunk',
+                    disabled: false,
+                },
+                {
+                    name: 'React Query (Coming Soon)',
+                    value: 'reactQuery',
+                    disabled: true,
+                },
+                { name: 'Zustand (Coming Soon)', value: 'zustand', disabled: true },
+                { name: 'Jotai (Coming Soon)', value: 'jotai', disabled: true },
+            ],
         },
     ]);
-    return middleware === 'Redux Saga' ? 'saga' : 'thunk';
+    return stateManagement;
 }
 // Check if the tool has been used before in this project
 export async function checkForPreviousUsage(framework) {
-    let checkFolder;
-    if (framework === 'react') {
-        checkFolder = path.join(process.cwd(), 'src/store');
-    }
-    else {
-        // Check for other frameworks later
-        checkFolder = '';
-    }
-    const exists = await fs.pathExists(checkFolder);
-    if (exists) {
-        console.error(chalk.red(`This project already has a Redux setup configured. Please use the 'generate' command to add slices and sagas.`));
+    const checkPaths = {
+        react: './src/store', // For Redux or similar state management in React
+        // Future check paths for other frameworks can go here
+    };
+    const pathToCheck = checkPaths[framework];
+    const storeExists = await fs.pathExists(pathToCheck);
+    if (storeExists) {
+        console.log(chalk.yellow('It looks like this tool has already been used in this project. Exiting to avoid conflicts.'));
         process.exit(1);
     }
 }

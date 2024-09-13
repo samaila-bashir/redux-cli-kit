@@ -11,7 +11,7 @@ export async function generateSliceAndSaga(modelName, middleware) {
     // Write the slice file using the template
     await fs.writeFile(path.join(sliceDir, 'index.ts'), generateTodoSlice(middleware));
     // Create the saga directory and file only if Saga is chosen
-    if (middleware === 'saga') {
+    if (middleware === 'reduxSaga') {
         const sagaDir = path.join(process.cwd(), `src/store/sagas/${modelName.toLowerCase()}`);
         await fs.ensureDir(sagaDir);
         await fs.writeFile(path.join(sagaDir, 'index.ts'), generateTodoSaga(middleware));

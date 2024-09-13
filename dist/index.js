@@ -3,7 +3,7 @@ import { program } from 'commander';
 import { setupRedux } from './src/setupRedux.js';
 import { generateSliceAndSaga } from './src/generateSliceSaga.js';
 import { resetProject } from './src/utilities/helpers/resetProject.js';
-import { checkForPreviousUsage, chooseFramework, checkForTypeScript, chooseMiddleware, } from './src/utilities/helpers/utils.js';
+import { checkForPreviousUsage, chooseFramework, checkForTypeScript, chooseStateManagement, } from './src/utilities/helpers/utils.js';
 import chalk from 'chalk';
 async function initCommand() {
     const isTypeScriptConfigured = await checkForTypeScript();
@@ -14,17 +14,26 @@ async function initCommand() {
     const framework = await chooseFramework();
     if (framework === 'react') {
         await checkForPreviousUsage(framework);
-        const middleware = (await chooseMiddleware());
-        await setupRedux({ middleware });
+        const stateManagement = await chooseStateManagement();
+        if (stateManagement === 'reduxSaga' || stateManagement === 'reduxThunk') {
+            const middleware = stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
+            await setupRedux({
+                middleware: middleware,
+            });
+        }
+        else {
+            console.log(chalk.yellow('More state management options are coming soon. Please select Redux Saga or Redux Thunk for now.'));
+            process.exit(1);
+        }
     }
     else {
-        console.log('Other frameworks are coming soon. You can only choose React for now.');
+        console.log(chalk.red('Other frameworks are coming soon. You can only choose React for now.'));
         process.exit(1);
     }
 }
 program
     .command('init')
-    .description('Set up state management (e.g., Redux with Saga or Thunk) and other configurations for React')
+    .description('Set up state management (e.g., Redux with Saga or Thunk) and other configurations.')
     .action(async () => {
     await initCommand();
 });
@@ -36,10 +45,10 @@ program
     .option('--thunk', 'Generate a thunk for the model (if Thunk is being used)')
     .action(async (model, options) => {
     const middleware = options.saga
-        ? 'saga'
+        ? 'reduxSaga'
         : options.thunk
-            ? 'thunk'
-            : 'saga'; // default to saga if not specified
+            ? 'reduxThunk'
+            : 'reduxSaga'; // default to saga if not specified
     await generateSliceAndSaga(model, middleware);
 });
 // Command for resetting the project

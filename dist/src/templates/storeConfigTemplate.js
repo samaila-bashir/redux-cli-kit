@@ -4,7 +4,7 @@ export function generateStoreConfig(middleware) {
   import rootReducer from './slices';
   import { persistStore, persistReducer } from 'redux-persist';
   import storage from 'redux-persist/lib/storage';
-  ${middleware === 'saga'
+  ${middleware === 'reduxSaga'
         ? "import createSagaMiddleware from 'redux-saga';\nimport rootSaga from './sagas';"
         : ''}
   
@@ -15,14 +15,14 @@ export function generateStoreConfig(middleware) {
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-  ${middleware === 'saga'
+  ${middleware === 'reduxSaga'
         ? `const sagaMiddleware = createSagaMiddleware();`
         : ''}
 
   export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-      ${middleware === 'saga'
+      ${middleware === 'reduxSaga'
         ? `getDefaultMiddleware({
       serializableCheck: false,
     }).concat(sagaMiddleware)`
@@ -30,7 +30,7 @@ export function generateStoreConfig(middleware) {
   });
 
   export const persistor = persistStore(store);
-  ${middleware === 'saga' ? 'sagaMiddleware.run(rootSaga);' : ''}
+  ${middleware === 'reduxSaga' ? 'sagaMiddleware.run(rootSaga);' : ''}
 
   export type RootState = ReturnType<typeof rootReducer>;
   export type AppDispatch = typeof store.dispatch;

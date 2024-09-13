@@ -1,5 +1,5 @@
 export function generateTodoSaga(middleware: string): string {
-  if (middleware === 'thunk') {
+  if (middleware === 'reduxThunk') {
     return '';
   }
   return `

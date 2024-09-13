@@ -5,7 +5,7 @@ export function generateTodoComponent(middleware: string): string {
   import styles from './TodoComponent.module.css';
   import { RootState, AppDispatch } from '../store';
   ${
-    middleware === 'thunk'
+    middleware === 'reduxThunk'
       ? "import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../store/slices/todos';"
       : "import { SAGA_ACTIONS } from '../store/sagas/actions';"
   }
@@ -25,7 +25,7 @@ export function generateTodoComponent(middleware: string): string {
 
     useEffect(() => {
       ${
-        middleware === 'thunk'
+        middleware === 'reduxThunk'
           ? 'dispatch(fetchTodos());'
           : 'dispatch({ type: SAGA_ACTIONS.FETCH_TODOS });'
       }
@@ -33,7 +33,7 @@ export function generateTodoComponent(middleware: string): string {
   
     const handleAddTodo = () => {
       ${
-        middleware === 'thunk'
+        middleware === 'reduxThunk'
           ? `dispatch(addTodo({
             id: Date.now(),
             title: newTodo,
@@ -53,7 +53,7 @@ export function generateTodoComponent(middleware: string): string {
 
     const handleUpdateTodo = (id: number) => {
       ${
-        middleware === 'thunk'
+        middleware === 'reduxThunk'
           ? `dispatch(updateTodo({
             id,
             title: 'Updated Todo',
@@ -72,7 +72,7 @@ export function generateTodoComponent(middleware: string): string {
 
     const handleDeleteTodo = (id: number) => {
       ${
-        middleware === 'thunk'
+        middleware === 'reduxThunk'
           ? `dispatch(deleteTodo(id));`
           : `dispatch({ type: SAGA_ACTIONS.DELETE_TODO, payload: id });`
       }
@@ -84,7 +84,7 @@ export function generateTodoComponent(middleware: string): string {
           <h1>Hurray! 🥳🎉</h1>
           <p>
             You have successfully configured your project with Redux and ${
-              middleware === 'thunk' ? 'Redux Thunk' : 'Redux Saga'
+              middleware === 'reduxThunk' ? 'Redux Thunk' : 'Redux Saga'
             } using <strong>StateEngine CLI Kit</strong>. If you love this package, kindly give it a star on 
             <a href="https://github.com/samaila-bashir/state-engine-cli-kit" target="_blank" rel="noopener noreferrer"> GitHub</a>.
             We are open to new contributions 🤗. 

@@ -24,7 +24,7 @@ export async function generateSliceAndSaga(
   );
 
   // Create the saga directory and file only if Saga is chosen
-  if (middleware === 'saga') {
+  if (middleware === 'reduxSaga') {
     const sagaDir = path.join(
       process.cwd(),
       `src/store/sagas/${modelName.toLowerCase()}`

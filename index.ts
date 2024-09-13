@@ -8,7 +8,7 @@ import {
   checkForPreviousUsage,
   chooseFramework,
   checkForTypeScript,
-  chooseMiddleware,
+  chooseStateManagement,
 } from './src/utilities/helpers/utils.js';
 import chalk from 'chalk';
 
@@ -21,7 +21,6 @@ async function initCommand() {
         'This tool works better with projects configured with TypeScript. Please add TypeScript to your project and try again.'
       )
     );
-
     process.exit(1);
   }
 
@@ -30,12 +29,27 @@ async function initCommand() {
   if (framework === 'react') {
     await checkForPreviousUsage(framework);
 
-    const middleware = (await chooseMiddleware()) as 'saga' | 'thunk';
+    const stateManagement = await chooseStateManagement();
 
-    await setupRedux({ middleware });
+    if (stateManagement === 'reduxSaga' || stateManagement === 'reduxThunk') {
+      const middleware =
+        stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
+      await setupRedux({
+        middleware: middleware as 'reduxSaga' | 'reduxThunk',
+      });
+    } else {
+      console.log(
+        chalk.yellow(
+          'More state management options are coming soon. Please select Redux Saga or Redux Thunk for now.'
+        )
+      );
+      process.exit(1);
+    }
   } else {
     console.log(
-      'Other frameworks are coming soon. You can only choose React for now.'
+      chalk.red(
+        'Other frameworks are coming soon. You can only choose React for now.'
+      )
     );
     process.exit(1);
   }
@@ -44,7 +58,7 @@ async function initCommand() {
 program
   .command('init')
   .description(
-    'Set up state management (e.g., Redux with Saga or Thunk) and other configurations for React'
+    'Set up state management (e.g., Redux with Saga or Thunk) and other configurations.'
   )
   .action(async () => {
     await initCommand();
@@ -61,10 +75,10 @@ program
   .action(
     async (model: string, options: { saga?: boolean; thunk?: boolean }) => {
       const middleware = options.saga
-        ? 'saga'
+        ? 'reduxSaga'
         : options.thunk
-          ? 'thunk'
-          : 'saga'; // default to saga if not specified
+          ? 'reduxThunk'
+          : 'reduxSaga'; // default to saga if not specified
       await generateSliceAndSaga(model, middleware);
     }
   );

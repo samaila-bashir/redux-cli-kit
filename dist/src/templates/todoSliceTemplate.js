@@ -1,7 +1,7 @@
 export function generateTodoSlice(middleware) {
     return `
   import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-  ${middleware === 'thunk'
+  ${middleware === 'reduxThunk'
         ? "import { createAsyncThunk } from '@reduxjs/toolkit';\nimport axios from 'axios';"
         : ''}
   
@@ -23,7 +23,7 @@ export function generateTodoSlice(middleware) {
     error: null,
   };
 
-  ${middleware === 'thunk'
+  ${middleware === 'reduxThunk'
         ? `
   // Thunks for API calls when using Thunk middleware
   export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
@@ -52,16 +52,16 @@ export function generateTodoSlice(middleware) {
     name: 'todos',
     initialState,
     reducers: {
-      ${middleware === 'thunk'
+      ${middleware === 'reduxThunk'
         ? ''
         : `fetchTodos: (state) => { state.loading = true; },`}
-      ${middleware === 'thunk'
+      ${middleware === 'reduxThunk'
         ? ''
         : `fetchTodosSuccess: (state, action: PayloadAction<Todo[]>) => { state.loading = false; state.todos = action.payload; },`}
-      ${middleware === 'thunk'
+      ${middleware === 'reduxThunk'
         ? ''
         : `fetchTodosFailure: (state, action: PayloadAction<string>) => { state.loading = false; state.error = action.payload; },`}
-      ${middleware === 'thunk'
+      ${middleware === 'reduxThunk'
         ? ''
         : `
       addTodo: (state, action: PayloadAction<Todo>) => {
@@ -79,7 +79,7 @@ export function generateTodoSlice(middleware) {
       `}
     },
     extraReducers: (builder) => {
-      ${middleware === 'thunk'
+      ${middleware === 'reduxThunk'
         ? `builder.addCase(fetchTodos.pending, (state) => { state.loading = true; })
         .addCase(fetchTodos.fulfilled, (state, action) => { state.loading = false; state.todos = action.payload; })
         .addCase(fetchTodos.rejected, (state, action) => { state.loading = false; state.error = action.error.message || 'Failed to fetch todos'; })
@@ -97,7 +97,7 @@ export function generateTodoSlice(middleware) {
     },
   });
   
-  export const { ${middleware === 'thunk'
+  export const { ${middleware === 'reduxThunk'
         ? ''
         : 'fetchTodos, fetchTodosSuccess, fetchTodosFailure, addTodo, updateTodo, deleteTodo'} } = todosSlice.actions;
   export default todosSlice.reducer;
