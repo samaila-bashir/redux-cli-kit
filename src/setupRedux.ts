@@ -13,8 +13,7 @@ import { generateTodoComponent } from './templates/todoComponentTemplate.js';
 import { generateTodoCSSModule } from './templates/todoComponentCSSTemplate.js';
 
 interface SetupOptions {
-  saga?: boolean;
-  thunk?: boolean;
+  middleware?: 'saga' | 'thunk';
 }
 
 // Function to ask the user whether to use Redux Saga or Thunk
@@ -114,17 +113,10 @@ async function createStoreStructure(middleware: string): Promise<void> {
 
 // Initial setup function for the CLI command
 export async function setupRedux(options: SetupOptions): Promise<void> {
-  let middleware = '';
-
+  let { middleware } = options;
   try {
-    // Check if saga or thunk option is provided
-    if (options.saga) {
-      middleware = 'saga';
-    } else if (options.thunk) {
-      middleware = 'thunk';
-    } else {
-      // Prompt for middleware choice if neither --saga nor --thunk is provided
-      middleware = await chooseMiddleware();
+    if (!middleware) {
+      middleware = (await chooseMiddleware()) as 'saga' | 'thunk';
     }
 
     await installDependencies(middleware);

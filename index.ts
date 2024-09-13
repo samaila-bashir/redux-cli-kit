@@ -4,18 +4,53 @@ import { program } from 'commander';
 import { setupRedux } from './src/setupRedux.js';
 import { generateSliceAndSaga } from './src/generateSliceSaga.js';
 import { resetProject } from './src/utilities/helpers/resetProject.js';
+import {
+  checkForPreviousUsage,
+  chooseFramework,
+  checkForTypeScript,
+  chooseMiddleware,
+} from './src/utilities/helpers/utils.js';
+import chalk from 'chalk';
 
-// "init" command for Redux setup
+async function initCommand() {
+  const isTypeScriptConfigured = await checkForTypeScript();
+
+  if (!isTypeScriptConfigured) {
+    console.log(
+      chalk.red(
+        'This tool works better with projects configured with TypeScript. Please add TypeScript to your project and try again.'
+      )
+    );
+
+    process.exit(1);
+  }
+
+  const framework = await chooseFramework();
+
+  if (framework === 'react') {
+    await checkForPreviousUsage(framework);
+
+    const middleware = (await chooseMiddleware()) as 'saga' | 'thunk';
+
+    await setupRedux({ middleware });
+  } else {
+    console.log(
+      'Other frameworks are coming soon. You can only choose React for now.'
+    );
+    process.exit(1);
+  }
+}
+
 program
   .command('init')
-  .description('Set up Redux, slices, saga or thunk, and store configuration')
-  .option('--saga', 'Include Redux Saga in the setup')
-  .option('--thunk', 'Include Redux Thunk in the setup')
-  .action(async (options: { saga: boolean; thunk: boolean }) => {
-    await setupRedux(options);
+  .description(
+    'Set up state management (e.g., Redux with Saga or Thunk) and other configurations for React'
+  )
+  .action(async () => {
+    await initCommand();
   });
 
-// "generate" command for creating slices and sagas or thunks
+// Command for generating slices and sagas or thunks
 program
   .command('generate <model>')
   .description(
@@ -34,7 +69,7 @@ program
     }
   );
 
-// "reset" command for cleaning up the store directory and uninstalling node modules
+// Command for resetting the project
 program
   .command('reset')
   .description(

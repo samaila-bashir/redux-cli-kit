@@ -70,18 +70,10 @@ async function createStoreStructure(middleware) {
 }
 // Initial setup function for the CLI command
 export async function setupRedux(options) {
-    let middleware = '';
+    let { middleware } = options;
     try {
-        // Check if saga or thunk option is provided
-        if (options.saga) {
-            middleware = 'saga';
-        }
-        else if (options.thunk) {
-            middleware = 'thunk';
-        }
-        else {
-            // Prompt for middleware choice if neither --saga nor --thunk is provided
-            middleware = await chooseMiddleware();
+        if (!middleware) {
+            middleware = (await chooseMiddleware());
         }
         await installDependencies(middleware);
         await createStoreStructure(middleware);
