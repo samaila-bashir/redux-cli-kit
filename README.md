@@ -10,7 +10,7 @@ StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplif
 
 #### [View Status Table](#stateengine-cli-kit-framework-and-library-support)
 
-## Features for Version 1.0.0
+## Features in Version 1.0.0
 
 - **Seamless choice of state management library Setup**: Automatically configures your choice of state management library e.g. Redux with `@reduxjs/toolkit`, `redux-persist`, and other required dependencies for React projects.
 - **Saga or Thunk**: Gives you the choice to set up your Redux store with either `Redux Saga` or `Redux Thunk` for managing asynchronous logic.
