@@ -1,46 +1,20 @@
-import { execa } from 'execa';
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { chooseStateManagement } from './utilities/helpers/utils.js';
-import { generateTodoSlice } from './templates/todoSliceTemplate.js';
-import { generateTodoSaga } from './templates/todoSagaTemplate.js';
-import { generateStoreConfig } from './templates/storeConfigTemplate.js';
-import { generateRootReducer } from './templates/rootReducerTemplate.js';
-import { generateRootSaga } from './templates/rootSagaTemplate.js';
-import { generateSagaActions } from './templates/sagaActionsTemplate.js';
-import { generateTodoComponent } from './templates/todoComponentTemplate.js';
-import { generateTodoCSSModule } from './templates/todoComponentCSSTemplate.js';
+import { chooseStateManagement } from '../../helpers/utils.js';
+import { generateTodoSaga } from '../../../templates/react/redux/redux-saga/todoSagaTemplate.js';
+import { generateStoreConfig } from '../../../templates/react/redux/common/storeConfigTemplate.js';
+import { generateRootReducer } from '../../../templates/react/redux/common/rootReducerTemplate.js';
+import { generateRootSaga } from '../../../templates/react/redux/redux-saga/rootSagaTemplate.js';
+import { generateSagaActions } from '../../../templates/react/redux/redux-saga/sagaActionsTemplate.js';
+import { generateTodoComponent } from '../../../templates/react/redux/component/todoComponentTemplate.js';
+import { generateTodoCSSModule } from '../../../templates/react/redux/component/todoComponentCSSTemplate.js';
+import { generateTodoSliceThunk } from '../../../templates/react/redux/redux-thunk/todoSliceThunkTemplate.js';
+import { generateTodoSliceSaga } from '../../../templates/react/redux/redux-saga/todoSliceSagaTemplate.js';
+import installDependencies from '../../helpers/installDependencies.js';
 
 interface SetupOptions {
   middleware?: 'reduxSaga' | 'reduxThunk';
-}
-
-// Function to install dependencies based on the state management choice
-async function installDependencies(stateManagement: string): Promise<void> {
-  const basePackages = [
-    'redux',
-    '@reduxjs/toolkit',
-    'redux-persist',
-    'react-redux',
-    'axios',
-  ];
-  let middlewarePackage = '';
-
-  if (stateManagement === 'reduxSaga') {
-    middlewarePackage = 'redux-saga';
-  } else if (stateManagement === 'reduxThunk') {
-    middlewarePackage = 'redux-thunk';
-  }
-
-  if (middlewarePackage) {
-    console.log(
-      chalk.green(
-        `Installing Redux, Redux Toolkit, redux-persist, and ${middlewarePackage}...`
-      )
-    );
-    await execa('npm', ['install', ...basePackages, middlewarePackage]);
-  }
 }
 
 async function createStoreStructure(stateManagement: string): Promise<void> {
@@ -51,11 +25,18 @@ async function createStoreStructure(stateManagement: string): Promise<void> {
   await fs.ensureDir(path.join(slicesDir, 'todos'));
   await fs.ensureDir(todosDir);
 
-  // Create a sample slice for the todo model
-  await fs.writeFile(
-    path.join(slicesDir, 'todos', 'index.ts'),
-    generateTodoSlice(stateManagement)
-  );
+  // Create the correct slice based on the state management choice
+  if (stateManagement === 'reduxThunk') {
+    await fs.writeFile(
+      path.join(slicesDir, 'todos', 'index.ts'),
+      generateTodoSliceThunk()
+    );
+  } else if (stateManagement === 'reduxSaga') {
+    await fs.writeFile(
+      path.join(slicesDir, 'todos', 'index.ts'),
+      generateTodoSliceSaga()
+    );
+  }
 
   // Create sagas if Redux Saga is chosen
   if (stateManagement === 'reduxSaga') {

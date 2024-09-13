@@ -1,17 +1,17 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { chooseStateManagement } from './utilities/helpers/utils.js';
-import { generateTodoSaga } from './templates/react/redux/redux-saga/todoSagaTemplate.js';
-import { generateStoreConfig } from './templates/react/redux/common/storeConfigTemplate.js';
-import { generateRootReducer } from './templates/react/redux/common/rootReducerTemplate.js';
-import { generateRootSaga } from './templates/react/redux/redux-saga/rootSagaTemplate.js';
-import { generateSagaActions } from './templates/react/redux/redux-saga/sagaActionsTemplate.js';
-import { generateTodoComponent } from './templates/react/redux/component/todoComponentTemplate.js';
-import { generateTodoCSSModule } from './templates/react/redux/component/todoComponentCSSTemplate.js';
-import { generateTodoSliceThunk } from './templates/react/redux/redux-thunk/todoSliceThunkTemplate.js';
-import { generateTodoSliceSaga } from './templates/react/redux/redux-saga/todoSliceSagaTemplate.js';
-import installDependencies from './utilities/helpers/installDependencies.js';
+import { chooseStateManagement } from '../../helpers/utils.js';
+import { generateTodoSaga } from '../../../templates/react/redux/redux-saga/todoSagaTemplate.js';
+import { generateStoreConfig } from '../../../templates/react/redux/common/storeConfigTemplate.js';
+import { generateRootReducer } from '../../../templates/react/redux/common/rootReducerTemplate.js';
+import { generateRootSaga } from '../../../templates/react/redux/redux-saga/rootSagaTemplate.js';
+import { generateSagaActions } from '../../../templates/react/redux/redux-saga/sagaActionsTemplate.js';
+import { generateTodoComponent } from '../../../templates/react/redux/component/todoComponentTemplate.js';
+import { generateTodoCSSModule } from '../../../templates/react/redux/component/todoComponentCSSTemplate.js';
+import { generateTodoSliceThunk } from '../../../templates/react/redux/redux-thunk/todoSliceThunkTemplate.js';
+import { generateTodoSliceSaga } from '../../../templates/react/redux/redux-saga/todoSliceSagaTemplate.js';
+import installDependencies from '../../helpers/installDependencies.js';
 async function createStoreStructure(stateManagement) {
     const srcDir = path.join(process.cwd(), 'src/store');
     const slicesDir = path.join(srcDir, 'slices');

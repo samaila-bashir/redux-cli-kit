@@ -27,7 +27,7 @@ function* fetchAllTodos(action: { type: string }): Generator<any, void, AxiosRes
   try {
     yield put(fetchTodos());
 
-    // Fetch todos from JSONPlaceholder and limit the result to 10
+    // Fetch todos from JSONPlaceholder and limit the result to 5
     const response = yield call(axios.get, 'https://jsonplaceholder.typicode.com/todos?_limit=5');
     yield put(fetchTodosSuccess(response.data));
   } catch (error: any) {

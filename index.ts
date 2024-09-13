@@ -1,59 +1,9 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { setupRedux } from './src/setupRedux.js';
-import { generateSliceAndSaga } from './src/generateSliceSaga.js';
+import { generateSliceAndSaga } from './src/templates/react/redux/common/generateSliceSaga.js';
 import { resetProject } from './src/utilities/helpers/resetProject.js';
-import {
-  checkForPreviousUsage,
-  chooseFramework,
-  checkForTypeScript,
-  chooseStateManagement,
-} from './src/utilities/helpers/utils.js';
-import chalk from 'chalk';
-
-async function initCommand() {
-  const isTypeScriptConfigured = await checkForTypeScript();
-
-  if (!isTypeScriptConfigured) {
-    console.log(
-      chalk.red(
-        'This tool works better with projects configured with TypeScript. Please add TypeScript to your project and try again.'
-      )
-    );
-    process.exit(1);
-  }
-
-  const framework = await chooseFramework();
-
-  if (framework === 'react') {
-    await checkForPreviousUsage(framework);
-
-    const stateManagement = await chooseStateManagement();
-
-    if (stateManagement === 'reduxSaga' || stateManagement === 'reduxThunk') {
-      const middleware =
-        stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
-      await setupRedux({
-        middleware: middleware as 'reduxSaga' | 'reduxThunk',
-      });
-    } else {
-      console.log(
-        chalk.yellow(
-          'More state management options are coming soon. Please select Redux Saga or Redux Thunk for now.'
-        )
-      );
-      process.exit(1);
-    }
-  } else {
-    console.log(
-      chalk.red(
-        'Other frameworks are coming soon. You can only choose React for now.'
-      )
-    );
-    process.exit(1);
-  }
-}
+import initCommand from './src/utilities/command-actions/initCommand.js';
 
 program
   .command('init')

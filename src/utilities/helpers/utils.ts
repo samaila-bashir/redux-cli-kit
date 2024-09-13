@@ -3,12 +3,11 @@ import fs from 'fs-extra';
 import inquirer from 'inquirer';
 import path from 'path';
 
-// Check if TypeScript is configured by checking for tsconfig.json
+// Check if the project is configured with TypeScript  by checking for tsconfig.json
 export async function checkForTypeScript(): Promise<boolean> {
   return fs.pathExists(path.join(process.cwd(), 'tsconfig.json'));
 }
 
-// Ask the user to select a framework
 export async function chooseFramework(): Promise<string> {
   const { framework } = await inquirer.prompt([
     {
