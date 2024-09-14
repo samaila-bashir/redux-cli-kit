@@ -16,6 +16,7 @@ const installedPackages = [
 export async function resetProject() {
     const storeDir = path.join(process.cwd(), 'src/store');
     const todosDir = path.join(process.cwd(), 'src/todos');
+    const configFile = path.join(process.cwd(), './seckconfig.json');
     // Step 1: Remove the store directory
     if (await fs.pathExists(storeDir)) {
         console.log(chalk.yellow('Cleaning up the store directory...'));
@@ -34,7 +35,16 @@ export async function resetProject() {
     else {
         console.log(chalk.blue('No existing todos directory to clean.'));
     }
-    // Step 3: Uninstall node modules
+    // Step 3: Remove config file
+    if (await fs.pathExists(configFile)) {
+        console.log(chalk.yellow('Removing config file...'));
+        await fs.remove(configFile);
+        console.log(chalk.green('Removed config file.'));
+    }
+    else {
+        console.log(chalk.blue('No existing config file found.'));
+    }
+    // Step 4: Uninstall node modules
     console.log(chalk.yellow('Uninstalling installed node modules...'));
     try {
         await execa('npm', ['uninstall', ...installedPackages]);
