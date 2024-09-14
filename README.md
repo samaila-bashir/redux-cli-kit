@@ -156,6 +156,10 @@ const App = () => {
 export default App;
 ```
 
+_Todo CRUD app configured with state management_
+
+![Todo CRUD App](public/todo-component.png)
+
 # StateEngine CLI Kit: Framework and Library Support
 
 ### React JS

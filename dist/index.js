@@ -5,9 +5,12 @@ import { resetProject } from './src/utilities/helpers/resetProject.js';
 import initCommand from './src/utilities/command-actions/initCommand.js';
 program
     .command('init')
-    .description('Set up state management (e.g., Redux with Saga or Thunk) and other configurations.')
-    .action(async () => {
-    await initCommand();
+    .description('Set up state management (e.g., Redux with Saga, Thunk, or other configurations).')
+    .option('--saga', 'Initializes your project with Redux Saga for managing side effects.')
+    .option('--thunk', 'Initializes your project with Redux Thunk for asynchronous logic.')
+    // Add more options here as you add more state management setups
+    .action(async (options) => {
+    await initCommand(options);
 });
 // Command for generating slices and sagas or thunks
 program

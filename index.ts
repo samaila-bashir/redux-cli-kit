@@ -8,10 +8,19 @@ import initCommand from './src/utilities/command-actions/initCommand.js';
 program
   .command('init')
   .description(
-    'Set up state management (e.g., Redux with Saga or Thunk) and other configurations.'
+    'Set up state management (e.g., Redux with Saga, Thunk, or other configurations).'
   )
-  .action(async () => {
-    await initCommand();
+  .option(
+    '--saga',
+    'Initializes your project with Redux Saga for managing side effects.'
+  )
+  .option(
+    '--thunk',
+    'Initializes your project with Redux Thunk for asynchronous logic.'
+  )
+  // Add more options here as you add more state management setups
+  .action(async (options: { saga: boolean; thunk: boolean }) => {
+    await initCommand(options);
   });
 
 // Command for generating slices and sagas or thunks

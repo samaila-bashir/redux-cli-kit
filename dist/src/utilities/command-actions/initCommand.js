@@ -1,30 +1,39 @@
 import chalk from 'chalk';
 import { checkForPreviousUsage, checkForTypeScript, chooseFramework, chooseStateManagement, } from '../helpers/utils.js';
 import { setupRedux } from '../react/redux/setupRedux.js';
-async function initCommand() {
+async function initCommand(options) {
     try {
         const isTypeScriptConfigured = await checkForTypeScript();
         if (!isTypeScriptConfigured) {
             console.log(chalk.yellow('This tool works best with frontend projects configured with TypeScript. Please add TypeScript to your project and try again.'));
             process.exit(1);
         }
-        const framework = await chooseFramework();
-        if (framework === 'react') {
+        let stateManagement = '';
+        let framework = 'react'; // Default to 'react' when saga or thunk is passed
+        if (options.saga || options.thunk) {
+            stateManagement = options.saga ? 'reduxSaga' : 'reduxThunk';
+            // Automatically check for previous usage for React since saga and thunk are for React with Redux
             await checkForPreviousUsage(framework);
-            const stateManagement = await chooseStateManagement();
-            if (stateManagement === 'reduxSaga' || stateManagement === 'reduxThunk') {
-                const middleware = stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
-                await setupRedux({
-                    middleware: middleware,
-                });
+        }
+        else {
+            framework = await chooseFramework();
+            if (framework === 'react') {
+                await checkForPreviousUsage(framework);
+                stateManagement = await chooseStateManagement();
             }
             else {
-                console.log(chalk.yellow('More state management options are coming soon. Please select Redux Saga or Redux Thunk for now.'));
+                console.log(chalk.red('Other frameworks are coming soon. You can only choose React for now.'));
                 process.exit(1);
             }
         }
+        if (stateManagement === 'reduxSaga' || stateManagement === 'reduxThunk') {
+            const middleware = stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
+            await setupRedux({
+                middleware: middleware,
+            });
+        }
         else {
-            console.log(chalk.red('Other frameworks are coming soon. You can only choose React for now.'));
+            console.log(chalk.yellow('More state management options are coming soon. Please select Redux Saga or Redux Thunk for now.'));
             process.exit(1);
         }
     }

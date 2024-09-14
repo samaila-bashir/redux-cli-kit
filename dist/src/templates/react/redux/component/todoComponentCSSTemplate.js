@@ -109,7 +109,7 @@ export function generateTodoCSSModule() {
   .footer {
     margin-top: 20px;
     font-size: 14px;
-    align-self: flex-end; /* Push footer to the bottom */
+    align-self: flex-end; 
   }
 
   .footer a {
