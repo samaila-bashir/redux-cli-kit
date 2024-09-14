@@ -6,7 +6,7 @@ StateEngine CLI Kit is a powerful and easy-to-use command-line tool that simplif
 >
 > — [Samaila Chatto Bashir](https://samailabashir.com)
 
-🔴 _Attention: This documentation is focused on state management setup on React projects configured with TypeScript, and the state management tool currently available is Redux with the option to use `Redux Saga` or `Redux Thunk`. We will be updating the status table below on the state management options added to the project._
+🔴 _Attention: This documentation is focused on state management setup on React projects configured with TypeScript, and the state management tool currently available is Redux with the option to use `Redux Saga` or `Redux Thunk`. I will be updating the status table below on the state management options added to the project._
 
 #### [View Status Table](#stateengine-cli-kit-framework-and-library-support)
 
@@ -118,7 +118,7 @@ seck reset
 
 ## Setting Up the Redux Provider
 
-Once you have initialized state-engine-cli-kit and your Redux store is configured, you'll need to update your main entry point (`index.tsx` for Create React App or `main.tsx` for Vite) with the following configuration:
+Once you have initialized StateEngine CLI Kit and your Redux store is configured, you'll need to update your main entry point (`index.tsx` for Create React App or `main.tsx` for Vite) with the following configuration:
 
 ```tsx
 import { Provider } from 'react-redux';
@@ -141,6 +141,20 @@ root.render(
 ```
 
 This will set up the Redux Provider along with PersistGate to ensure state persistence across page reloads.
+
+## Viewing the Sample Todo App
+
+After setting up the Redux Provider, to see the sample Todo app generated, import the component in your `App.tsx` file like this:
+
+```tsx
+import TodoComponent from './todos';
+
+const App = () => {
+  return <TodoComponent />;
+};
+
+export default App;
+```
 
 # StateEngine CLI Kit: Framework and Library Support
 
