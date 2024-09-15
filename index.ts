@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { resetProject } from './src/utilities/helpers/resetProject.js';
+import { resetCommand } from './src/utilities/command-actions/resetCommand.js';
 import initCommand from './src/utilities/command-actions/initCommand.js';
-import { generateModel } from './src/templates/react/redux/common/generate.js';
+import { generateCommand } from './src/utilities/command-actions/generateCommand.js';
 
 program
   .command('init')
@@ -44,7 +44,7 @@ program
         action?: string;
       }
     ) => {
-      await generateModel(model, options);
+      await generateCommand(model, options);
     }
   );
 
@@ -55,7 +55,7 @@ program
     'Clean up the existing store structure and uninstall installed node modules'
   )
   .action(async () => {
-    await resetProject();
+    await resetCommand();
   });
 
 program.parse(process.argv);

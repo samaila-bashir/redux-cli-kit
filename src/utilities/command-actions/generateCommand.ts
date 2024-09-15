@@ -2,22 +2,16 @@ import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import {
-  readConfigFile,
-  writeConfigFile,
-} from '../../../../utilities/helpers/config.js';
-import { generateModelSagaCRUD } from '../redux-saga/generateModelSagaCRUD.js';
-import { generateModelSliceThunk } from '../redux-thunk/generateModelSliceThunk.js';
-import { generateModelSliceSaga } from '../redux-saga/generateModelSliceSaga.js';
-import { generateSingleActionSliceSaga } from '../redux-saga/generateSingleActionSliceSaga.js';
-import { generateSingleActionSaga } from '../redux-saga/generateSingleActionSaga.js';
-import {
-  chooseFramework,
-  chooseStateManagement,
-} from '../../../../utilities/helpers/utils.js';
+import { readConfigFile, writeConfigFile } from '../helpers/config.js';
+import { generateModelSagaCRUD } from '../../templates/react/redux/redux-saga/generateModelSagaCRUD.js';
+import { generateModelSliceThunk } from '../../templates/react/redux/redux-thunk/generateModelSliceThunk.js';
+import { generateModelSliceSaga } from '../../templates/react/redux/redux-saga/generateModelSliceSaga.js';
+import { generateSingleActionSliceSaga } from '../../templates/react/redux/redux-saga/generateSingleActionSliceSaga.js';
+import { generateSingleActionSaga } from '../../templates/react/redux/redux-saga/generateSingleActionSaga.js';
+import { chooseFramework, chooseStateManagement } from '../helpers/utils.js';
 
 // Function to generate slice, saga, or thunk based on user input
-export async function generateModel(
+export async function generateCommand(
   modelName: string,
   options: { slice?: boolean; saga?: boolean; thunk?: boolean; action?: string }
 ): Promise<void> {
