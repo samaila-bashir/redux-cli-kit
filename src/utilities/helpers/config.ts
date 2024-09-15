@@ -5,6 +5,7 @@ import chalk from 'chalk';
 interface Config {
   framework: string;
   stateManagement: string;
+  storeDir?: string;
 }
 
 export function writeConfigFile(config: Config) {

@@ -16,18 +16,20 @@ export async function generateModel(modelName, options) {
     // Check if seckconfig.json exists
     if (!config) {
         console.log(chalk.yellow("No configuration file found. Let's configure your project."));
-        // Prompt the user for framework, state management, and directory
+        // Prompt the user for framework, state management, and store directory
         const framework = await chooseFramework();
         const stateManagement = await chooseStateManagement();
-        config = { framework, stateManagement };
         const { specifiedDir } = await promptUserForDirectory();
-        baseDir = specifiedDir; // Use the specified directory provided by the user
+        baseDir = specifiedDir;
+        // Add the directory to the config and save
+        config = { framework, stateManagement, storeDir: baseDir };
         writeConfigFile(config);
         console.log(chalk.green('Configuration file created.'));
     }
     else {
-        baseDir = path.join(process.cwd(), 'src/store');
+        baseDir = config.storeDir || path.join(process.cwd(), 'src/store');
     }
+    // Proceed with the rest of the model generation logic
     const sliceDir = path.join(baseDir, `slices/${modelName.toLowerCase()}`);
     const sagaDir = path.join(baseDir, `sagas/${modelName.toLowerCase()}`);
     const thunkDir = path.join(baseDir, `thunks/${modelName.toLowerCase()}`);
