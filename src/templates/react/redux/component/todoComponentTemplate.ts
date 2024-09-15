@@ -2,12 +2,12 @@ export function generateTodoComponent(middleware: string): string {
   return `
   import { useEffect, useState } from 'react';
   import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-  import styles from './TodoComponent.module.css';
-  import { RootState, AppDispatch } from '../store';
+  import styles from './Todo.module.css';
+  import { RootState, AppDispatch } from '../../store';
   ${
     middleware === 'reduxThunk'
       ? "import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../store/slices/todos';"
-      : "import { SAGA_ACTIONS } from '../store/sagas/actions';"
+      : "import { SAGA_ACTIONS } from '../../store/sagas/actions';"
   }
 
   const TodoComponent = () => {

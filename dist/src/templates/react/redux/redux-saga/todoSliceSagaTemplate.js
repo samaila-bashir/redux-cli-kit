@@ -1,56 +1,65 @@
-export function generateTodoSliceSaga() {
+export function generateTodoSliceSaga(modelName) {
+    const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
+    const modelNameLowerCase = modelName.toLowerCase();
     return `
     import { createSlice, PayloadAction } from '@reduxjs/toolkit';
   
-    interface Todo {
+    interface ${modelNameCapitalized} {
       id: number;
       title: string;
       completed: boolean;
     }
   
-    interface TodosState {
-      todos: Todo[];
+    interface ${modelNameCapitalized}sState {
+      ${modelNameLowerCase}s: ${modelNameCapitalized}[];
       loading: boolean;
       error: string | null;
     }
   
-    const initialState: TodosState = {
-      todos: [],
+    const initialState: ${modelNameCapitalized}sState = {
+      ${modelNameLowerCase}s: [],
       loading: false,
       error: null,
     };
   
-    const todosSlice = createSlice({
-      name: 'todos',
+    const ${modelNameLowerCase}sSlice = createSlice({
+      name: '${modelNameLowerCase}s',
       initialState,
       reducers: {
-        fetchTodos: (state) => {
+        fetch${modelNameCapitalized}s: (state) => {
           state.loading = true;
         },
-        fetchTodosSuccess: (state, action: PayloadAction<Todo[]>) => {
+        fetch${modelNameCapitalized}sSuccess: (state, action: PayloadAction<${modelNameCapitalized}[]>) => {
           state.loading = false;
-          state.todos = action.payload;
+          state.${modelNameLowerCase}s = action.payload;
         },
-        fetchTodosFailure: (state, action: PayloadAction<string>) => {
+        fetch${modelNameCapitalized}sFailure: (state, action: PayloadAction<string>) => {
           state.loading = false;
           state.error = action.payload;
         },
-        addTodo: (state, action: PayloadAction<Todo>) => {
-          state.todos.push(action.payload);
+        add${modelNameCapitalized}: (state, action: PayloadAction<${modelNameCapitalized}>) => {
+          state.${modelNameLowerCase}s.push(action.payload);
         },
-        updateTodo: (state, action: PayloadAction<Todo>) => {
-          const index = state.todos.findIndex(todo => todo.id === action.payload.id);
+        update${modelNameCapitalized}: (state, action: PayloadAction<${modelNameCapitalized}>) => {
+          const index = state.${modelNameLowerCase}s.findIndex(${modelNameLowerCase} => ${modelNameLowerCase}.id === action.payload.id);
           if (index >= 0) {
-            state.todos[index] = action.payload;
+            state.${modelNameLowerCase}s[index] = action.payload;
           }
         },
-        deleteTodo: (state, action: PayloadAction<number>) => {
-          state.todos = state.todos.filter(todo => todo.id !== action.payload);
+        delete${modelNameCapitalized}: (state, action: PayloadAction<number>) => {
+          state.${modelNameLowerCase}s = state.${modelNameLowerCase}s.filter(${modelNameLowerCase} => ${modelNameLowerCase}.id !== action.payload);
         },
       },
     });
   
-    export const { fetchTodos, fetchTodosSuccess, fetchTodosFailure, addTodo, updateTodo, deleteTodo } = todosSlice.actions;
-    export default todosSlice.reducer;
-    `;
+    export const { 
+      fetch${modelNameCapitalized}s, 
+      fetch${modelNameCapitalized}sSuccess, 
+      fetch${modelNameCapitalized}sFailure, 
+      add${modelNameCapitalized}, 
+      update${modelNameCapitalized}, 
+      delete${modelNameCapitalized} 
+    } = ${modelNameLowerCase}sSlice.actions;
+    export default ${modelNameLowerCase}sSlice.reducer;
+  `;
 }

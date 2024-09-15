@@ -1,7 +1,7 @@
 export function generateRootReducer(): string {
   return `
   import { combineReducers } from '@reduxjs/toolkit';
-  import todosReducer from './todos';
+  import todosReducer from './todo';
   
   const rootReducer = combineReducers({
     todos: todosReducer,

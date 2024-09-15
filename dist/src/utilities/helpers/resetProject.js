@@ -15,7 +15,7 @@ const installedPackages = [
 // Function to clean up the store and todos directories and uninstall packages
 export async function resetProject() {
     const storeDir = path.join(process.cwd(), 'src/store');
-    const todosDir = path.join(process.cwd(), 'src/todos');
+    const todosDir = path.join(process.cwd(), 'src/components/Todos');
     const configFile = path.join(process.cwd(), './seckconfig.json');
     // Step 1: Remove the store directory
     if (await fs.pathExists(storeDir)) {

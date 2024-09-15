@@ -12,44 +12,52 @@ import { generateTodoCSSModule } from '../../../templates/react/redux/component/
 import { generateTodoSliceThunk } from '../../../templates/react/redux/redux-thunk/todoSliceThunkTemplate.js';
 import { generateTodoSliceSaga } from '../../../templates/react/redux/redux-saga/todoSliceSagaTemplate.js';
 import installDependencies from '../../helpers/installDependencies.js';
-async function createStoreStructure(stateManagement) {
+// Dynamic generation function to use model name
+async function createStoreStructure(stateManagement, modelName) {
+    const modelNameLowerCase = modelName.toLowerCase();
+    const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
     const srcDir = path.join(process.cwd(), 'src/store');
     const slicesDir = path.join(srcDir, 'slices');
-    const todosDir = path.join(srcDir, '../todos');
-    await fs.ensureDir(path.join(slicesDir, 'todos'));
-    await fs.ensureDir(todosDir);
+    const modelDir = path.join(slicesDir, modelNameLowerCase);
+    const componentsDir = path.join(srcDir, `../components/${modelNameCapitalized}/`);
+    // Ensure directories exist
+    await fs.ensureDir(modelDir);
+    await fs.ensureDir(componentsDir);
     // Create the correct slice based on the state management choice
     if (stateManagement === 'reduxThunk') {
-        await fs.writeFile(path.join(slicesDir, 'todos', 'index.ts'), generateTodoSliceThunk());
+        await fs.writeFile(path.join(modelDir, 'index.ts'), generateTodoSliceThunk(modelNameCapitalized));
     }
     else if (stateManagement === 'reduxSaga') {
-        await fs.writeFile(path.join(slicesDir, 'todos', 'index.ts'), generateTodoSliceSaga());
+        await fs.writeFile(path.join(modelDir, 'index.ts'), generateTodoSliceSaga(modelNameCapitalized));
     }
     // Create sagas if Redux Saga is chosen
     if (stateManagement === 'reduxSaga') {
         const sagasDir = path.join(srcDir, 'sagas');
-        await fs.ensureDir(path.join(sagasDir, 'todos'));
-        await fs.writeFile(path.join(sagasDir, 'todos', 'index.ts'), generateTodoSaga(stateManagement));
+        const modelSagaDir = path.join(sagasDir, modelNameLowerCase);
+        await fs.ensureDir(modelSagaDir);
+        await fs.writeFile(path.join(modelSagaDir, 'index.ts'), generateTodoSaga(stateManagement));
         await fs.writeFile(path.join(sagasDir, 'index.ts'), generateRootSaga());
         const actionsDir = path.join(sagasDir, 'actions');
         await fs.ensureDir(actionsDir);
         await fs.writeFile(path.join(actionsDir, 'index.ts'), generateSagaActions());
     }
+    // Generate root reducer and store config
     await fs.writeFile(path.join(slicesDir, 'index.ts'), generateRootReducer());
     await fs.writeFile(path.join(srcDir, 'index.ts'), generateStoreConfig(stateManagement));
-    await fs.writeFile(path.join(todosDir, 'index.tsx'), generateTodoComponent(stateManagement));
-    await fs.writeFile(path.join(todosDir, 'TodoComponent.module.css'), generateTodoCSSModule());
-    console.log(chalk.green('State management setup complete!'));
+    // Generate component and CSS based on the model name
+    await fs.writeFile(path.join(componentsDir, 'index.tsx'), generateTodoComponent(modelNameCapitalized));
+    await fs.writeFile(path.join(componentsDir, `${modelNameCapitalized}.module.css`), generateTodoCSSModule());
+    console.log(chalk.green(`State management setup for ${modelName} complete!`));
 }
 // Initial setup function for the CLI command
-export async function setupRedux(options) {
+export async function setupRedux(options, modelName) {
     let { middleware } = options;
     try {
         if (!middleware) {
             middleware = (await chooseStateManagement());
         }
         await installDependencies(middleware);
-        await createStoreStructure(middleware);
+        await createStoreStructure(middleware, modelName);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (error) {

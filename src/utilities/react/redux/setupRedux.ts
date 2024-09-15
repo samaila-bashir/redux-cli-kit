@@ -17,34 +17,48 @@ interface SetupOptions {
   middleware?: 'reduxSaga' | 'reduxThunk';
 }
 
-async function createStoreStructure(stateManagement: string): Promise<void> {
+// Dynamic generation function to use model name
+async function createStoreStructure(
+  stateManagement: string,
+  modelName: string
+): Promise<void> {
+  const modelNameLowerCase = modelName.toLowerCase();
+  const modelNameCapitalized =
+    modelName.charAt(0).toUpperCase() + modelName.slice(1);
+
   const srcDir = path.join(process.cwd(), 'src/store');
   const slicesDir = path.join(srcDir, 'slices');
-  const todosDir = path.join(srcDir, '../todos');
+  const modelDir = path.join(slicesDir, modelNameLowerCase);
+  const componentsDir = path.join(
+    srcDir,
+    `../components/${modelNameCapitalized}/`
+  );
 
-  await fs.ensureDir(path.join(slicesDir, 'todos'));
-  await fs.ensureDir(todosDir);
+  // Ensure directories exist
+  await fs.ensureDir(modelDir);
+  await fs.ensureDir(componentsDir);
 
   // Create the correct slice based on the state management choice
   if (stateManagement === 'reduxThunk') {
     await fs.writeFile(
-      path.join(slicesDir, 'todos', 'index.ts'),
-      generateTodoSliceThunk()
+      path.join(modelDir, 'index.ts'),
+      generateTodoSliceThunk(modelNameCapitalized)
     );
   } else if (stateManagement === 'reduxSaga') {
     await fs.writeFile(
-      path.join(slicesDir, 'todos', 'index.ts'),
-      generateTodoSliceSaga()
+      path.join(modelDir, 'index.ts'),
+      generateTodoSliceSaga(modelNameCapitalized)
     );
   }
 
   // Create sagas if Redux Saga is chosen
   if (stateManagement === 'reduxSaga') {
     const sagasDir = path.join(srcDir, 'sagas');
-    await fs.ensureDir(path.join(sagasDir, 'todos'));
+    const modelSagaDir = path.join(sagasDir, modelNameLowerCase);
 
+    await fs.ensureDir(modelSagaDir);
     await fs.writeFile(
-      path.join(sagasDir, 'todos', 'index.ts'),
+      path.join(modelSagaDir, 'index.ts'),
       generateTodoSaga(stateManagement)
     );
 
@@ -58,6 +72,7 @@ async function createStoreStructure(stateManagement: string): Promise<void> {
     );
   }
 
+  // Generate root reducer and store config
   await fs.writeFile(path.join(slicesDir, 'index.ts'), generateRootReducer());
 
   await fs.writeFile(
@@ -65,20 +80,24 @@ async function createStoreStructure(stateManagement: string): Promise<void> {
     generateStoreConfig(stateManagement)
   );
 
+  // Generate component and CSS based on the model name
   await fs.writeFile(
-    path.join(todosDir, 'index.tsx'),
-    generateTodoComponent(stateManagement)
+    path.join(componentsDir, 'index.tsx'),
+    generateTodoComponent(modelNameCapitalized)
   );
   await fs.writeFile(
-    path.join(todosDir, 'TodoComponent.module.css'),
+    path.join(componentsDir, `${modelNameCapitalized}.module.css`),
     generateTodoCSSModule()
   );
 
-  console.log(chalk.green('State management setup complete!'));
+  console.log(chalk.green(`State management setup for ${modelName} complete!`));
 }
 
 // Initial setup function for the CLI command
-export async function setupRedux(options: SetupOptions): Promise<void> {
+export async function setupRedux(
+  options: SetupOptions,
+  modelName: string
+): Promise<void> {
   let { middleware } = options;
   try {
     if (!middleware) {
@@ -88,7 +107,7 @@ export async function setupRedux(options: SetupOptions): Promise<void> {
     }
 
     await installDependencies(middleware);
-    await createStoreStructure(middleware);
+    await createStoreStructure(middleware, modelName);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.message.includes('User force closed the prompt')) {

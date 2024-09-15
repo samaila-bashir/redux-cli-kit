@@ -20,7 +20,7 @@ async function initCommand(options) {
             // Setup Redux store and write the configuration file
             await setupRedux({
                 middleware: stateManagement,
-            });
+            }, 'todo');
             writeConfigFile({ framework, stateManagement });
         }
         else {
@@ -36,7 +36,7 @@ async function initCommand(options) {
                     // Setup Redux store and write the configuration file
                     await setupRedux({
                         middleware: middleware,
-                    });
+                    }, 'todo');
                     writeConfigFile({ framework, stateManagement });
                 }
                 else {

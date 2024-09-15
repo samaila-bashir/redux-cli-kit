@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { generateSliceAndSaga } from './src/templates/react/redux/common/generateSliceSaga.js';
 import { resetProject } from './src/utilities/helpers/resetProject.js';
 import initCommand from './src/utilities/command-actions/initCommand.js';
+import { generateModel } from './src/templates/react/redux/common/generate.js';
 program
     .command('init')
     .description('Set up state management (e.g., Redux with Saga, Thunk, or other configurations).')
@@ -15,16 +15,13 @@ program
 // Command for generating slices and sagas or thunks
 program
     .command('generate <model>')
-    .description('Generate a new Redux slice (and optionally saga if Saga is used) for a model')
-    .option('--saga', 'Generate a saga for the model (if Saga is being used)')
-    .option('--thunk', 'Generate a thunk for the model (if Thunk is being used)')
+    .description('Generate a slice, saga, or thunk for the model')
+    .option('--slice', 'Generate only the slice for the model')
+    .option('--saga', 'Generate only the saga for the model')
+    .option('--thunk', 'Generate only the thunk for the model')
+    .option('--action <action>', 'Generate a single action for the model (default: fetch)')
     .action(async (model, options) => {
-    const middleware = options.saga
-        ? 'reduxSaga'
-        : options.thunk
-            ? 'reduxThunk'
-            : 'reduxSaga'; // default to saga if not specified
-    await generateSliceAndSaga(model, middleware);
+    await generateModel(model, options);
 });
 // Command for resetting the project
 program

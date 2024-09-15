@@ -1,7 +1,7 @@
 export function generateRootSaga() {
     return `
   import { all, fork } from 'redux-saga/effects';
-  import { watchTodoActions } from './todos';
+  import { watchTodoActions } from './todo';
   
   export default function* rootSaga() {
     yield all([

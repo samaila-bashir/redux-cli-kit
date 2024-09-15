@@ -38,9 +38,12 @@ async function initCommand(options: InitOptions) {
       await checkForPreviousUsage(framework);
 
       // Setup Redux store and write the configuration file
-      await setupRedux({
-        middleware: stateManagement as 'reduxSaga' | 'reduxThunk',
-      });
+      await setupRedux(
+        {
+          middleware: stateManagement as 'reduxSaga' | 'reduxThunk',
+        },
+        'todo'
+      );
       writeConfigFile({ framework, stateManagement });
     } else {
       // Let user choose framework when no flag is passed
@@ -60,9 +63,12 @@ async function initCommand(options: InitOptions) {
             stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
 
           // Setup Redux store and write the configuration file
-          await setupRedux({
-            middleware: middleware as 'reduxSaga' | 'reduxThunk',
-          });
+          await setupRedux(
+            {
+              middleware: middleware as 'reduxSaga' | 'reduxThunk',
+            },
+            'todo'
+          );
           writeConfigFile({ framework, stateManagement });
         } else {
           console.log(
