@@ -198,18 +198,6 @@ seck generate <model>
 
   This will generate a full CRUD saga for the users model.
 
-- `--thunk`
-
-  **Description**: Generates only the thunk for the specified model. Thunks handle asynchronous actions such as fetching data from an API in your Redux store.
-
-  **Example**:
-
-  ```bash
-  seck generate users --thunk
-  ```
-
-  This will generate a full CRUD slice and thunk for the users model.
-
 - `--action <action>`
 
   **Description**: Generates a single action for the specified model, either as part of a slice, saga, or thunk. By default, the action is fetch. You can specify a different action such as addUser, deleteUser, or any other action that fits your use case.
@@ -232,14 +220,6 @@ seck generate <model>
 
   This will generate a full CRUD implementation for the users model with both the slice and the saga (if using Redux Saga).
 
-- Full CRUD for Slice and Thunk
-
-  ```bash
-  seck generate users --thunk
-  ```
-
-  This will generate a full CRUD slice and its thunk for the users model (if using Redux Thunk).
-
 - Single Action Slice for Saga
 
   ```bash
@@ -251,10 +231,10 @@ seck generate <model>
 - Single Action Thunk
 
   ```bash
-  seck generate users --thunk --action addUser
+  seck generate users --slice --action addUser
   ```
 
-  This will generate a thunk and a slice for the addUser action within the users model.
+  This will generate a thunk and a slice for the addUser action within the users model if you configured your project with thunk.
 
 - Single Action Saga
 
@@ -264,13 +244,13 @@ seck generate <model>
 
   This will generate a saga for the fetchUsers action within the users model.
 
-- Full CRUD Slice for Saga
+- Full CRUD Slice for Saga or Thunk
 
   ```bash
   seck generate users --slice
   ```
 
-  This will generate a full CRUD slice for the users model with Redux Saga.
+  This will generate a full CRUD slice for the users model with Redux Saga or Thunk.
 
 - Full CRUD Saga
 
@@ -290,7 +270,6 @@ The configuration is saved in `seckconfig.json` so that you won’t need to prov
 
 - If you specify both `--saga` and `--action`, the CLI will generate a single action saga for the given model and action.
 - If you specify both `--slice` and `--action`, the CLI will generate a single action slice for the given model and action.
-- The default action is `fetch`, but you can customize it by providing the `--action` flag with a different action name.
 
 This CLI tool is designed to help streamline Redux state management setup by automatically generating the necessary boilerplate for your models with simple commands.
 
