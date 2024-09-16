@@ -1,6 +1,19 @@
 export function generateSingleActionSliceSaga(modelName, action) {
+    // Validate action name (optional)
+    if (!action) {
+        throw new Error('Action name is required.');
+    }
+    // Optionally, validate that action is a valid identifier
+    function isValidIdentifier(name) {
+        return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(name);
+    }
+    if (!isValidIdentifier(action)) {
+        throw new Error(`Invalid action name: '${action}'.`);
+    }
     const modelNameLowerCase = modelName.toLowerCase();
     const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
+    // Optionally, capitalize the action name if needed
+    // const actionCapitalized = action.charAt(0).toUpperCase() + action.slice(1);
     return `
       import { createSlice, PayloadAction } from '@reduxjs/toolkit';
   

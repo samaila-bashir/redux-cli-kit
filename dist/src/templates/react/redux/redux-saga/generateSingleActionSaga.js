@@ -1,24 +1,27 @@
-export function generateSingleActionSaga(modelName) {
+export function generateSingleActionSaga(modelName, actionName) {
+    const modelNameLowerCase = modelName.toLowerCase();
+    const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
+    const actionCapitalized = actionName.charAt(0).toUpperCase() + actionName.slice(1);
     return `
     import { call, put, takeLatest } from 'redux-saga/effects';
     import axios from 'axios';
-    import { fetch${modelName}, fetch${modelName}Success, fetch${modelName}Failure } from '../slices/${modelName.toLowerCase()}';
+    import { ${actionCapitalized}${modelNameCapitalized}, ${actionCapitalized}${modelNameCapitalized}Success, ${actionCapitalized}${modelNameCapitalized}Failure } from '../slices/${modelNameLowerCase}';
 
-    function* fetch${modelName}Saga(): Generator<any, void, { data: any }> {
+    function* ${actionCapitalized}${modelNameCapitalized}Saga(): Generator<any, void, { data: any }> {
       try {
-        const response = yield call(axios.get, '/api/${modelName.toLowerCase()}');
-        yield put(fetch${modelName}Success(response.data));
+        const response = yield call(axios.get, '/api/${modelNameLowerCase}');
+        yield put(${actionCapitalized}${modelNameCapitalized}Success(response.data));
       } catch (error: unknown) {
         if (error instanceof Error) {
-          yield put(fetch${modelName}Failure(error.message));
+          yield put(${actionCapitalized}${modelNameCapitalized}Failure(error.message));
         } else {
-          yield put(fetch${modelName}Failure('An unknown error occurred'));
+          yield put(${actionCapitalized}${modelNameCapitalized}Failure('An unknown error occurred'));
         }
       }
     }
 
-    export default function* ${modelName.toLowerCase()}Saga() {
-      yield takeLatest(fetch${modelName}.type, fetch${modelName}Saga);
+    export default function* ${modelNameLowerCase}Saga() {
+      yield takeLatest(${actionCapitalized}${modelNameCapitalized}.type, ${actionCapitalized}${modelNameCapitalized}Saga);
     }
   `;
 }
