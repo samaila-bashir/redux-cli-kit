@@ -42,7 +42,6 @@ export async function generateCommand(
   // Proceed with the rest of the model generation logic
   const sliceDir = path.join(baseDir, `slices/${modelName.toLowerCase()}`);
   const sagaDir = path.join(baseDir, `sagas/${modelName.toLowerCase()}`);
-  const thunkDir = path.join(baseDir, `thunks/${modelName.toLowerCase()}`);
 
   const stateManagement = config.stateManagement;
   const action = options.action;
@@ -71,7 +70,6 @@ export async function generateCommand(
       );
     } else if (stateManagement === 'reduxThunk') {
       await fs.ensureDir(sliceDir);
-      await fs.ensureDir(thunkDir);
       await fs.writeFile(
         path.join(sliceDir, 'index.ts'),
         generateModelSliceThunk(modelName) // Full CRUD for Thunk
@@ -122,13 +120,16 @@ export async function generateCommand(
       console.log(chalk.green(`Single Action Slice for ${action} generated.`));
     }
     if (options.thunk) {
-      // Generate full CRUD or single action thunk
-      await fs.ensureDir(thunkDir);
-      await fs.writeFile(
-        path.join(thunkDir, 'index.ts'),
-        generateModelSliceThunk(modelName) // Full CRUD or Single Action Thunk
-      );
-      console.log(chalk.green(`Slice and Thunk for ${modelName} generated.`));
+      if (stateManagement === 'reduxThunk') {
+        await fs.ensureDir(sliceDir);
+        await fs.writeFile(
+          path.join(sliceDir, 'index.ts'),
+          generateModelSliceThunk(modelName, options.action)
+        );
+        console.log(chalk.green(`Slice and Thunk for ${modelName} generated.`));
+      } else if (stateManagement === 'reduxSaga') {
+        console.log(chalk.red('Thunks are not used with redux-saga.'));
+      }
     }
   }
 
