@@ -1,6 +1,6 @@
 export function generateSingleActionSliceSaga(
   modelName: string,
-  action: string
+  action?: string
 ): string {
   const modelNameLowerCase = modelName.toLowerCase();
   const modelNameCapitalized =

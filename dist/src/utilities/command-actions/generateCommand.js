@@ -33,10 +33,8 @@ export async function generateCommand(modelName, options) {
     const sliceDir = path.join(baseDir, `slices/${modelName.toLowerCase()}`);
     const sagaDir = path.join(baseDir, `sagas/${modelName.toLowerCase()}`);
     const thunkDir = path.join(baseDir, `thunks/${modelName.toLowerCase()}`);
-    // Ensure directories exist or create them
-    await fs.ensureDir(sliceDir);
     const stateManagement = config.stateManagement;
-    const action = options.action || 'fetch';
+    const action = options.action;
     // Determine customSlicePath based on the user's directory selection or fallback to default
     const customSlicePath = baseDir.includes('slices')
         ? path.relative(sagaDir, sliceDir) // If user specifies a directory in 'slices'
@@ -45,6 +43,7 @@ export async function generateCommand(modelName, options) {
     if (!options.slice && !options.saga && !options.thunk) {
         // Generate full CRUD with Saga or Thunk
         if (stateManagement === 'reduxSaga') {
+            await fs.ensureDir(sliceDir);
             await fs.ensureDir(sagaDir);
             await fs.writeFile(path.join(sliceDir, 'index.ts'), generateModelSliceSaga(modelName) // Full CRUD for Slice (Saga)
             );
@@ -53,6 +52,7 @@ export async function generateCommand(modelName, options) {
             console.log(chalk.green(`Full CRUD Slice and Saga for ${modelName} generated.`));
         }
         else if (stateManagement === 'reduxThunk') {
+            await fs.ensureDir(sliceDir);
             await fs.ensureDir(thunkDir);
             await fs.writeFile(path.join(sliceDir, 'index.ts'), generateModelSliceThunk(modelName) // Full CRUD for Thunk
             );
@@ -62,6 +62,7 @@ export async function generateCommand(modelName, options) {
     else {
         // Handle individual file generation
         if (options.slice && !options.action) {
+            await fs.ensureDir(sliceDir);
             // Generate full CRUD slice for model
             await fs.writeFile(path.join(sliceDir, 'index.ts'), stateManagement === 'reduxSaga'
                 ? generateModelSliceSaga(modelName) // Full CRUD for Slice (Saga)
@@ -94,7 +95,7 @@ export async function generateCommand(modelName, options) {
         if (options.thunk) {
             // Generate full CRUD or single action thunk
             await fs.ensureDir(thunkDir);
-            await fs.writeFile(path.join(thunkDir, 'index.ts'), generateModelSliceThunk(modelName, action) // Full CRUD or Single Action Thunk
+            await fs.writeFile(path.join(thunkDir, 'index.ts'), generateModelSliceThunk(modelName) // Full CRUD or Single Action Thunk
             );
             console.log(chalk.green(`Slice and Thunk for ${modelName} generated.`));
         }
