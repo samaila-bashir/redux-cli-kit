@@ -1,95 +1,114 @@
-import fs from 'fs-extra';
-import path from 'path';
 import chalk from 'chalk';
-import { generateFullCRUD } from './generators/generateFullCRUD.js';
-import { generateSlice } from './generators/generateSlice.js';
-import { generateSaga } from './generators/generateSaga.js';
-import { generateThunk } from './generators/generateThunk.js';
+import {
+  generateFullCRUD,
+  generateSlice,
+  generateSaga,
+  generateThunk,
+} from './generators/index.js';
 import { ensureConfig } from '../helpers/config.js';
 import { setupDirectories } from '../helpers/fileSystem.js';
+import {
+  GenerateContext,
+  GenerateOptions,
+  SeckConfig,
+} from '../types/index.js';
+import path from 'path';
+import { fileExists } from '../helpers/utils.js';
 
-/**
- * Generates Redux slice, saga, or thunk based on user input.
- *
- * @param {string} modelName - The name of the model for which the slice/saga/thunk will be generated.
- * @param {Object} options - Options for the generation process.
- * @param {boolean} [options.slice] - Indicates if a slice should be generated.
- * @param {boolean} [options.saga] - Indicates if a saga should be generated.
- * @param {boolean} [options.thunk] - Indicates if a thunk should be generated.
- * @param {string} [options.action] - Specific action to be generated within the slice or saga.
- *
- * @returns {Promise<void>} - Resolves when the command generation is complete.
- */
 export async function generateCommand(
   modelName: string,
-  options: { slice?: boolean; saga?: boolean; thunk?: boolean; action?: string }
+  options: GenerateOptions
 ): Promise<void> {
+  const context = await setupGenerateContext(modelName);
+
+  if (isFullCRUDGeneration(options)) {
+    await generateFullCRUD(
+      context.config,
+      context.modelName,
+      context.sliceFileExists,
+      context.sliceDir,
+      context.sagaDir ?? null,
+      context.sliceFilePath,
+      context.sagaFilePath ?? null,
+      context.customSlicePath
+    );
+  } else {
+    await generateSelectedComponents(context, options);
+  }
+
+  displayReminders(context.config);
+}
+
+async function setupGenerateContext(
+  modelName: string
+): Promise<GenerateContext> {
   const config = await ensureConfig();
   const { sliceDir, sagaDir, sliceFilePath, sagaFilePath } = setupDirectories(
     config,
     modelName
   );
-  const sliceFileExists = await fs.pathExists(sliceFilePath);
 
-  let sagaFileExists = false;
-  let customSlicePath = '';
+  return {
+    config,
+    modelName,
+    sliceDir,
+    sagaDir: sagaDir ?? undefined,
+    sliceFilePath,
+    sagaFilePath: sagaFilePath ?? undefined,
+    sliceFileExists: await fileExists(sliceFilePath),
+    sagaFileExists: await fileExists(sagaFilePath ?? ''),
+    customSlicePath: sagaDir ? path.relative(sagaDir, sliceDir) : '',
+  };
+}
 
-  if (config.stateManagement === 'reduxSaga' && sagaDir && sagaFilePath) {
-    sagaFileExists = await fs.pathExists(sagaFilePath);
-    customSlicePath = path.relative(sagaDir, sliceDir);
-  }
+function isFullCRUDGeneration(options: GenerateOptions): boolean {
+  return !options.slice && !options.saga && !options.thunk;
+}
 
-  if (!options.slice && !options.saga && !options.thunk) {
-    await generateFullCRUD(
-      config,
-      modelName,
-      sliceFileExists,
-      sliceDir,
-      sagaDir,
-      sliceFilePath,
-      sagaFilePath,
-      customSlicePath
+async function generateSelectedComponents(
+  context: GenerateContext,
+  options: GenerateOptions
+): Promise<void> {
+  if (options.slice) {
+    await generateSlice(
+      context.config,
+      options,
+      context.modelName,
+      context.sliceFileExists,
+      context.sliceDir,
+      context.sliceFilePath
     );
-  } else {
-    if (options.slice) {
-      await generateSlice(
-        config,
-        options,
-        modelName,
-        sliceFileExists,
-        sliceDir,
-        sliceFilePath
-      );
-    }
-    if (
-      options.saga &&
-      config.stateManagement === 'reduxSaga' &&
-      sagaDir &&
-      sagaFilePath
-    ) {
-      await generateSaga(
-        config,
-        options,
-        modelName,
-        sagaFileExists,
-        sagaDir,
-        sagaFilePath,
-        customSlicePath
-      );
-    }
-    if (options.thunk || config.stateManagement === 'reduxThunk') {
-      await generateThunk(
-        config,
-        options,
-        modelName,
-        sliceFileExists,
-        sliceDir,
-        sliceFilePath
-      );
-    }
   }
+  if (
+    options.saga &&
+    context.config.stateManagement === 'reduxSaga' &&
+    context.sagaDir &&
+    context.sagaFilePath
+  ) {
+    await generateSaga(
+      context.config,
+      options,
+      context.modelName,
+      context.sagaFileExists,
+      context.sagaDir,
+      context.sagaFilePath,
+      context.customSlicePath
+    );
+  }
+  if (options.thunk || context.config.stateManagement === 'reduxThunk') {
+    await generateThunk(
+      context.config,
+      options,
+      context.modelName,
+      context.sliceFileExists,
+      context.sliceDir,
+      context.sliceFilePath
+    );
+  }
+}
 
-  if (options.saga && config.stateManagement === 'reduxSaga') {
+function displayReminders(config: SeckConfig): void {
+  if (config.stateManagement === 'reduxSaga') {
     console.log(
       chalk.whiteBright(
         'Reminder: Update your actions and watchers as necessary.'
