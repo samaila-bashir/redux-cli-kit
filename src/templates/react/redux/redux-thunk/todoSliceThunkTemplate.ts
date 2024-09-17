@@ -4,7 +4,7 @@ export function generateTodoSliceThunk(modelName: string): string {
   const modelNameLowerCase = modelName.toLowerCase();
 
   return `
-    import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+    import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
     import axios from 'axios';
     
     interface ${modelNameCapitalized} {
@@ -52,7 +52,7 @@ export function generateTodoSliceThunk(modelName: string): string {
       name: '${modelNameLowerCase}s',
       initialState,
       reducers: {},
-      extraReducers: (builder) => {
+      extraReducers: (builder: ActionReducerMapBuilder<${modelNameCapitalized}State>) => {
         builder
           .addCase(fetch${modelNameCapitalized}s.pending, (state) => {
             state.loading = true;

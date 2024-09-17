@@ -3,7 +3,7 @@ export function generateModelSliceThunk(modelName) {
     const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
     const apiBaseUrl = `https://jsonplaceholder.typicode.com/${modelNameLowerCase}s`;
     return `
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface ${modelNameCapitalized} {
@@ -63,7 +63,7 @@ const ${modelNameLowerCase}Slice = createSlice({
   name: '${modelNameLowerCase}',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: (builder: ActionReducerMapBuilder<${modelNameCapitalized}State>) => {
     builder
       // Fetch
       .addCase(fetch${modelNameCapitalized}s.pending, (state: ${modelNameCapitalized}State) => {

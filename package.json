@@ -10,6 +10,7 @@
   "scripts": {
     "build": "npx tsc",
     "watch": "npx tsc --watch",
+    "clean": "rm -rf dist",
     "relink": "npm unlink -g && npm link",
     "lint": "eslint .",
     "format": "prettier --write ."
