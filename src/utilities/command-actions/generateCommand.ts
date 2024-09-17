@@ -145,9 +145,11 @@ export async function generateCommand(
     }
   }
 
-  console.log(
-    chalk.whiteBright(
-      'Reminder: Update your actions and watchers as necessary.'
-    )
-  );
+  if (options.saga && config.stateManagement === 'reduxSaga') {
+    console.log(
+      chalk.whiteBright(
+        'Reminder: Update your actions and watchers as necessary.'
+      )
+    );
+  }
 }
