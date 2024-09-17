@@ -1,68 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import { readConfigFile, writeConfigFile } from '../helpers/config.js';
-import { chooseFramework, chooseStateManagement } from '../helpers/utils.js';
-import { promptUserForDirectory } from '../helpers/promptUserForDirectory.js';
 import { generateFullCRUD } from './generators/generateFullCRUD.js';
 import { generateSlice } from './generators/generateSlice.js';
 import { generateSaga } from './generators/generateSaga.js';
 import { generateThunk } from './generators/generateThunk.js';
-
-interface Config {
-  storeDir?: string;
-  framework: string;
-  stateManagement: 'reduxSaga' | 'reduxThunk';
-}
-
-/**
- * Ensures a configuration exists, creating one if necessary.
- * @returns {Promise<Object>} The configuration object.
- */
-async function ensureConfig(): Promise<Config> {
-  let config = readConfigFile();
-
-  if (!config) {
-    console.log(
-      chalk.yellow("No configuration file found. Let's configure your project.")
-    );
-
-    const framework = await chooseFramework();
-    const stateManagement = (await chooseStateManagement()) as
-      | 'reduxSaga'
-      | 'reduxThunk';
-    const { specifiedDir } = await promptUserForDirectory();
-    config = { framework, stateManagement, storeDir: specifiedDir } as Config;
-    writeConfigFile(config);
-
-    console.log(chalk.green('Configuration file created.'));
-  }
-
-  return config as Config;
-}
-
-/**
- * Sets up directories and file paths for the generation process.
- * @param {Object} config - The configuration object.
- * @param {string} modelName - The name of the model.
- * @returns {Object} An object containing the necessary directories and file paths.
- */
-function setupDirectories(config: Config, modelName: string) {
-  const baseDir = config.storeDir || path.join(process.cwd(), 'src/store');
-  const sliceDir = path.join(baseDir, `slices/${modelName.toLowerCase()}`);
-  const sliceFilePath = path.join(sliceDir, 'index.ts');
-
-  // Only set up saga directory if using Redux Saga
-  let sagaDir = null;
-  let sagaFilePath = null;
-
-  if (config.stateManagement === 'reduxSaga') {
-    sagaDir = path.join(baseDir, `sagas/${modelName.toLowerCase()}`);
-    sagaFilePath = path.join(sagaDir, 'index.ts');
-  }
-
-  return { baseDir, sliceDir, sagaDir, sliceFilePath, sagaFilePath };
-}
+import { ensureConfig } from '../helpers/config.js';
+import { setupDirectories } from '../helpers/fileSystem.js';
 
 /**
  * Generates Redux slice, saga, or thunk based on user input.
