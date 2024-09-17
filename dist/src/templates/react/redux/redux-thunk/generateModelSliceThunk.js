@@ -1,3 +1,25 @@
+/**
+ * Generates a Redux Toolkit slice with thunks for a given model.
+ *
+ * @param {string} modelName - The name of the model (e.g., "Todo", "User").
+ * @returns {string} A string containing the generated Redux Toolkit slice code.
+ *
+ * @description
+ * This function creates a Redux Toolkit slice with the following features:
+ * - Defines interfaces for the model and its state.
+ * - Creates an initial state.
+ * - Generates CRUD thunks (fetch, add, update, delete) using createAsyncThunk.
+ * - Sets up a slice with extraReducers to handle the async thunk actions.
+ * - Uses axios for API calls to a mock API (jsonplaceholder).
+ *
+ * The generated code includes:
+ * - Type definitions
+ * - Async thunks for CRUD operations
+ * - A slice with reducers for handling loading, success, and error states
+ *
+ * @example
+ * const todoSliceCode = generateModelSliceThunk("Todo");
+ */
 export function generateModelSliceThunk(modelName) {
     const modelNameLowerCase = modelName.toLowerCase();
     const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);

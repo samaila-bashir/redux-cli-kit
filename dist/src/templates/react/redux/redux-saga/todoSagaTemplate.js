@@ -1,3 +1,9 @@
+/**
+ * Generates a Redux Saga template for todo operations.
+ *
+ * @param {string} middleware - The middleware type. If 'reduxThunk', returns an empty string.
+ * @returns {string} A string containing the Redux Saga code for todo operations, or an empty string if the middleware is 'reduxThunk'.
+ */
 export function generateTodoSaga(middleware) {
     if (middleware === 'reduxThunk') {
         return '';

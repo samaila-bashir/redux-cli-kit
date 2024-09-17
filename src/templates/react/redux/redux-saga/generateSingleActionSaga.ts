@@ -1,3 +1,24 @@
+/**
+ * Generates a Redux Saga for a single action.
+ *
+ * @param {string} modelName - The name of the model (e.g., 'user', 'product').
+ * @param {string} actionName - The name of the action (e.g., 'fetch', 'create').
+ * @returns {string} A string containing the generated Redux Saga code.
+ *
+ * @description
+ * This function creates a Redux Saga template for a single action. It includes:
+ * - Imports for redux-saga effects, axios, and action creators.
+ * - A saga function that handles the API call and dispatches success/failure actions.
+ * - A watcher saga that listens for the specified action type.
+ *
+ * The generated code assumes:
+ * - The API endpoint follows the pattern '/api/{modelName}'.
+ * - There are corresponding action creators and a slice file for the model.
+ * - The action follows a request-success-failure pattern.
+ *
+ * @example
+ * const sagaCode = generateSingleActionSaga('user', 'fetch');
+ */
 export function generateSingleActionSaga(
   modelName: string,
   actionName: string

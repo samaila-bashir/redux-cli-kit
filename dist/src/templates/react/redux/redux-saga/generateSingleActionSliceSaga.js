@@ -1,3 +1,14 @@
+/**
+ * Generates a Redux Toolkit slice with a single action and its corresponding success and failure actions.
+ *
+ * @param {string} modelName - The name of the model (e.g., 'todo', 'user').
+ * @param {string} action - The name of the action (e.g., 'fetch', 'create').
+ * @returns {string} A string containing the generated Redux Toolkit slice code.
+ * @throws {Error} If the action name is empty or not a valid identifier.
+ *
+ * @example
+ * const sliceCode = generateSingleActionSliceSaga('todo', 'fetch');
+ */
 export function generateSingleActionSliceSaga(modelName, action) {
     // Validate action name (optional)
     if (!action) {
@@ -12,8 +23,6 @@ export function generateSingleActionSliceSaga(modelName, action) {
     }
     const modelNameLowerCase = modelName.toLowerCase();
     const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
-    // Optionally, capitalize the action name if needed
-    // const actionCapitalized = action.charAt(0).toUpperCase() + action.slice(1);
     return `
       import { createSlice, PayloadAction } from '@reduxjs/toolkit';
   

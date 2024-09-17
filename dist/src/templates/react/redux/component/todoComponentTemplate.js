@@ -1,3 +1,22 @@
+/**
+ * Generates a React component for a Todo application with Redux integration.
+ *
+ * @param {string} middleware - The Redux middleware to use ('reduxThunk' or 'reduxSaga').
+ * @returns {string} A string containing the entire React component code.
+ *
+ * @description
+ * This function generates a TodoComponent that includes:
+ * - Redux state management for todos (fetching, adding, updating, deleting)
+ * - Conditional imports and dispatch calls based on the chosen middleware
+ * - A form to add new todos
+ * - A list of todos with update and delete functionality
+ * - Loading and error state handling
+ * - Styling with CSS modules
+ * - Footer with author information and links
+ *
+ * The generated component is compatible with either Redux Thunk or Redux Saga,
+ * depending on the middleware parameter.
+ */
 export function generateTodoComponent(middleware) {
     return `
   import { useEffect, useState } from 'react';

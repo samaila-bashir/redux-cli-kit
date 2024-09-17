@@ -1,3 +1,28 @@
+/**
+ * Generates a Redux Saga CRUD (Create, Read, Update, Delete) template for a given model.
+ *
+ * @param {string} modelName - The name of the model (e.g., 'User', 'Product').
+ * @param {string} [slicePath='../../slices'] - The relative path to the Redux slice file.
+ * @returns {string} A string containing the generated Redux Saga code for CRUD operations.
+ *
+ * @description
+ * This function creates a template for Redux Saga effects to handle CRUD operations for a specified model.
+ * It includes:
+ * - Fetch (Read) operation
+ * - Add (Create) operation
+ * - Update operation
+ * - Delete operation
+ *
+ * The generated code includes:
+ * - Import statements for necessary dependencies and action creators
+ * - A basic interface for the model
+ * - Saga generator functions for each CRUD operation
+ * - A root saga that uses takeLatest to watch for dispatched actions
+ *
+ * @example
+ * const userSagaCode = generateModelSagaCRUD('User');
+ * const productSagaCode = generateModelSagaCRUD('Product', '../slices');
+ */
 export function generateModelSagaCRUD(
   modelName: string,
   slicePath: string = '../../slices'

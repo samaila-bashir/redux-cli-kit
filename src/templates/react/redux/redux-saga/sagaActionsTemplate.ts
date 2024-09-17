@@ -1,3 +1,9 @@
+/**
+ * Generates a string containing the definition of SAGA_ACTIONS enum.
+ * This enum includes action types for common CRUD operations on todos.
+ *
+ * @returns {string} A string representation of the SAGA_ACTIONS enum.
+ */
 export function generateSagaActions(): string {
   return `
   export enum SAGA_ACTIONS {

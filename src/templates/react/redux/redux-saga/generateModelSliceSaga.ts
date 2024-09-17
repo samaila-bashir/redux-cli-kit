@@ -1,3 +1,25 @@
+/**
+ * Generates a Redux Toolkit slice with saga-compatible actions for a given model.
+ *
+ * @param {string} modelName - The name of the model to generate the slice for.
+ * @returns {string} A string containing the generated Redux Toolkit slice code.
+ *
+ * @description
+ * This function creates a Redux Toolkit slice with the following features:
+ * - A typed state interface for the model
+ * - Initial state
+ * - Reducers for fetching, adding, updating, and deleting model items
+ * - Action creators for all reducers
+ *
+ * The generated code includes:
+ * - Fetch actions (fetch, fetchSuccess, fetchFailure)
+ * - Add actions (add, addSuccess, addFailure)
+ * - Update actions (update, updateSuccess, updateFailure)
+ * - Delete actions (delete, deleteSuccess, deleteFailure)
+ *
+ * Each action set includes a start action, a success action, and a failure action
+ * to handle asynchronous operations and error states.
+ */
 export function generateModelSliceSaga(modelName: string): string {
   const modelNameLowerCase = modelName.toLowerCase();
   const modelNameCapitalized =

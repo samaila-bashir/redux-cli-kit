@@ -1,3 +1,20 @@
+/**
+ * Generates a Redux Toolkit slice template for a todo-like model with saga actions.
+ *
+ * @param {string} modelName - The name of the model (e.g., "todo", "task").
+ * @returns {string} A string containing the generated Redux Toolkit slice code.
+ *
+ * @description
+ * This function creates a template for a Redux Toolkit slice with the following features:
+ * - Defines interfaces for the model and its state.
+ * - Creates an initial state.
+ * - Defines reducers for fetching, adding, updating, and deleting items.
+ * - Includes actions for handling asynchronous operations (fetch success/failure).
+ * - Exports action creators and the reducer.
+ *
+ * The generated code is customized based on the provided modelName, with proper capitalization
+ * and pluralization applied where necessary.
+ */
 export function generateTodoSliceSaga(modelName) {
     const modelNameCapitalized = modelName.charAt(0).toUpperCase() + modelName.slice(1);
     const modelNameLowerCase = modelName.toLowerCase();

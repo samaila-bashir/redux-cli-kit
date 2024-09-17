@@ -1,3 +1,15 @@
+/**
+ * Generates code for a Redux Thunk action and its corresponding extraReducers.
+ *
+ * @param {string} modelName - The name of the model (e.g., 'user', 'post').
+ * @param {string} action - The action to be performed (e.g., 'fetch', 'create').
+ * @returns {{newThunkCode: string, newExtraReducersCode: string}} An object containing:
+ *   - newThunkCode: A string with the generated Redux Thunk code.
+ *   - newExtraReducersCode: A string with the generated extraReducers code.
+ *
+ * @example
+ * const { newThunkCode, newExtraReducersCode } = generateSingleActionThunk('user', 'fetch');
+ */
 export function generateSingleActionThunk(
   modelName: string,
   action: string

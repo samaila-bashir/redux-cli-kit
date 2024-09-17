@@ -1,3 +1,13 @@
+/**
+ * Generates a Redux Toolkit thunk action and corresponding reducer cases for a single action.
+ *
+ * @param {string} modelName - The name of the model (e.g., 'user', 'product').
+ * @param {string} action - The name of the action (e.g., 'fetchAll', 'create').
+ * @returns {string} A string containing the generated thunk action and reducer cases.
+ *
+ * @example
+ * const result = generateSingleActionSliceThunk('user', 'fetchAll');
+ */
 export function generateSingleActionSliceThunk(
   modelName: string,
   action: string

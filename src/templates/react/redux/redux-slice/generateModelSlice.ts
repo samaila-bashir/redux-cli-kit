@@ -1,3 +1,25 @@
+/**
+ * Generates a Redux Toolkit slice for a given model.
+ *
+ * @param {string} modelName - The name of the model to generate the slice for.
+ * @returns {string} A string containing the TypeScript code for the Redux slice.
+ *
+ * @description
+ * This function creates a Redux Toolkit slice with the following features:
+ * - Defines interfaces for the model and its state.
+ * - Creates an initial state.
+ * - Defines reducers for fetching, adding, updating, and deleting the model.
+ * - Exports action creators and the reducer.
+ *
+ * The generated slice includes:
+ * - Fetch actions (start, success, failure)
+ * - Add action (success)
+ * - Update action (success)
+ * - Delete action (success)
+ *
+ * @example
+ * const todoSliceCode = generateModelSlice('Todo');
+ */
 export function generateModelSlice(modelName: string): string {
   const modelNameLowerCase = modelName.toLowerCase();
   const modelNameCapitalized =

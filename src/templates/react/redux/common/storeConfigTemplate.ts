@@ -1,3 +1,10 @@
+/**
+ * Generates a string representation of a Redux store configuration.
+ *
+ * @param {string} middleware - The middleware to be used ('reduxSaga' or other).
+ * @returns {string} A string containing the code for configuring a Redux store,
+ *                   including persistence and optional Redux Saga setup.
+ */
 export function generateStoreConfig(middleware: string): string {
   return `
   import { configureStore } from '@reduxjs/toolkit';

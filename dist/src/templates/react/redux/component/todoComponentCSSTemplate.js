@@ -1,3 +1,16 @@
+/**
+ * Generates a CSS module string for a Todo application.
+ *
+ * @returns {string} A string containing CSS styles for various components of a Todo app,
+ *                   including layout, form elements, todo list items, and responsive design.
+ *                   The styles cover:
+ *                   - Overall container layout
+ *                   - Welcome section styling
+ *                   - Form and input styling
+ *                   - Todo list and item styling
+ *                   - Footer styling
+ *                   - Color scheme and typography
+ */
 export function generateTodoCSSModule() {
     return `
   html, body {
