@@ -5,6 +5,10 @@ import { SeckConfig } from '../types/index.js';
 import { chooseFramework, chooseStateManagement } from './utils.js';
 import { promptUserForDirectory } from './promptUserForDirectory.js';
 
+/**
+ * Writes the configuration to a JSON file.
+ * @param {SeckConfig} config - The configuration object to write.
+ */
 export function writeConfigFile(config: SeckConfig) {
   const configPath = path.join(process.cwd(), 'seckconfig.json');
 
@@ -16,6 +20,10 @@ export function writeConfigFile(config: SeckConfig) {
   }
 }
 
+/**
+ * Reads the configuration from the JSON file.
+ * @returns {SeckConfig | null} The parsed configuration object, or null if the file doesn't exist or can't be read.
+ */
 export function readConfigFile(): SeckConfig | null {
   const configPath = path.join(process.cwd(), 'seckconfig.json');
 
@@ -35,7 +43,7 @@ export function readConfigFile(): SeckConfig | null {
 
 /**
  * Ensures a configuration exists, creating one if necessary.
- * @returns {Promise<Object>} The configuration object.
+ * @returns {Promise<SeckConfig>} A promise that resolves to the configuration object.
  */
 export async function ensureConfig(): Promise<SeckConfig> {
   let config = readConfigFile();

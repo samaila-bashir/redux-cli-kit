@@ -5,7 +5,6 @@ import inquirer from 'inquirer';
  *
  * @returns {Promise<{ specifiedDir: string }>} - The specified directory by the user.
  */
-
 export async function promptUserForDirectory(): Promise<{
   specifiedDir: string;
 }> {

@@ -7,5 +7,5 @@ import { writeConfigFile } from '../../../helpers/config.js';
 export async function handleReduxInitialization(stateManagement) {
     const middleware = stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
     await setupRedux({ middleware }, 'todo');
-    writeConfigFile({ framework: 'react', stateManagement });
+    writeConfigFile({ framework: 'react', stateManagement: middleware });
 }

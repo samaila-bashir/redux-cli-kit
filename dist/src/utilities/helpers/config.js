@@ -1,6 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import { chooseFramework, chooseStateManagement } from './utils.js';
+import { promptUserForDirectory } from './promptUserForDirectory.js';
+/**
+ * Writes the configuration to a JSON file.
+ * @param {SeckConfig} config - The configuration object to write.
+ */
 export function writeConfigFile(config) {
     const configPath = path.join(process.cwd(), 'seckconfig.json');
     try {
@@ -11,6 +17,10 @@ export function writeConfigFile(config) {
         console.error(chalk.red('Failed to write seckconfig file:', error));
     }
 }
+/**
+ * Reads the configuration from the JSON file.
+ * @returns {SeckConfig | null} The parsed configuration object, or null if the file doesn't exist or can't be read.
+ */
 export function readConfigFile() {
     const configPath = path.join(process.cwd(), 'seckconfig.json');
     if (!fs.existsSync(configPath)) {
@@ -25,4 +35,25 @@ export function readConfigFile() {
         console.error(chalk.red('Failed to read seckconfig file:', error));
         return null;
     }
+}
+/**
+ * Ensures a configuration exists, creating one if necessary.
+ * @returns {Promise<SeckConfig>} A promise that resolves to the configuration object.
+ */
+export async function ensureConfig() {
+    let config = readConfigFile();
+    if (!config) {
+        console.log(chalk.yellow("No configuration file found. Let's configure your project."));
+        const framework = await chooseFramework();
+        const stateManagement = (await chooseStateManagement());
+        const { specifiedDir } = await promptUserForDirectory();
+        config = {
+            framework,
+            stateManagement,
+            storeDir: specifiedDir,
+        };
+        writeConfigFile(config);
+        console.log(chalk.green('Configuration file created.'));
+    }
+    return config;
 }

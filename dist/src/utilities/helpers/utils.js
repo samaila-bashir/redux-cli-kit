@@ -2,10 +2,17 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import inquirer from 'inquirer';
 import path from 'path';
-// Check if the project is configured with TypeScript  by checking for tsconfig.json
+/**
+ * Checks if the project is configured with TypeScript by looking for tsconfig.json.
+ * @returns {Promise<boolean>} A promise that resolves to true if tsconfig.json exists, false otherwise.
+ */
 export async function checkForTypeScript() {
     return fs.pathExists(path.join(process.cwd(), 'tsconfig.json'));
 }
+/**
+ * Prompts the user to choose a framework or library.
+ * @returns {Promise<string>} A promise that resolves to the chosen framework's value.
+ */
 export async function chooseFramework() {
     const { framework } = await inquirer.prompt([
         {
@@ -22,6 +29,10 @@ export async function chooseFramework() {
     ]);
     return framework;
 }
+/**
+ * Prompts the user to choose a state management setup.
+ * @returns {Promise<string>} A promise that resolves to the chosen state management's value.
+ */
 export async function chooseStateManagement() {
     const { stateManagement } = await inquirer.prompt([
         {
@@ -47,7 +58,11 @@ export async function chooseStateManagement() {
     ]);
     return stateManagement;
 }
-// Check if the tool has been used before in this project
+/**
+ * Checks if the tool has been used before in this project.
+ * @param {string} framework - The chosen framework.
+ * @returns {Promise<void>} A promise that resolves if the tool hasn't been used before, or exits the process if it has.
+ */
 export async function checkForPreviousUsage(framework) {
     const checkPaths = {
         react: './src/store', // For Redux or similar state management in React
@@ -58,5 +73,19 @@ export async function checkForPreviousUsage(framework) {
     if (storeExists) {
         console.log(chalk.yellow('It looks like this tool has already been used in this project. Exiting to avoid conflicts.'));
         process.exit(1);
+    }
+}
+/**
+ * Checks if a file exists at the given path.
+ * @param {string} filePath - The path to the file to check.
+ * @returns {Promise<boolean>} A promise that resolves to true if the file exists, false otherwise.
+ */
+export async function fileExists(filePath) {
+    try {
+        await fs.access(filePath);
+        return true;
+    }
+    catch {
+        return false;
     }
 }
