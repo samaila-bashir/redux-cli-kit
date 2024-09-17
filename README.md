@@ -94,25 +94,49 @@ StateEngine CLI Kit is built with TypeScript in mind. It generates TypeScript fi
 
 ## Example Usage
 
-**Initialize Redux Store with Saga**:
+#### Create a React app with TypeScript template
+
+To get started, create a new React app with the TypeScript template by running:
+
+```bash
+npx create-react-app my-app --template typescript
+```
+
+#### Install the package
+
+Install the StateEngine CLI Kit package using npm:
+
+```bash
+npm install stateengine-cli-kit
+```
+
+#### Add SECK to your script
+
+Since you will be running CLI commands frequently, you can add `seck` to your scripts in `package.json`. Alternatively, you can run the CLI directly using:
+
+```bash
+npx seck init
+```
+
+#### Alternativel, You Can Initialize Redux Store with Saga:
 
 ```bash
 seck init --saga
 ```
 
-**Initialize Redux Store with Thunk**:
+#### Initialize Redux Store with Thunk:
 
 ```bash
 seck init --thunk
 ```
 
-**Generate a New Model (e.g., Users)**:
+#### Generate a New Model (e.g., Users):
 
 ```bash
 seck generate users
 ```
 
-**Reset the Redux Store**:
+#### Reset the Redux Store:
 
 ```bash
 seck reset
@@ -156,6 +180,12 @@ const App = () => {
 };
 
 export default App;
+```
+
+#### Launch the Todo App
+
+```bash
+npm start or npm run dev
 ```
 
 _Todo CRUD app configured with state management_
