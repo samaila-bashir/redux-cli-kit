@@ -1,19 +1,17 @@
 import chalk from 'chalk';
-import {
-  checkForPreviousUsage,
-  checkForTypeScript,
-  chooseFramework,
-  chooseStateManagement,
-} from '../helpers/utils.js';
-import { setupRedux } from '../react/redux/setupRedux.js';
-import { writeConfigFile } from '../helpers/config.js';
+import { checkForTypeScript } from '../helpers/utils.js';
+import { handleFrameworkInitialization } from '../frameworks/frameworkInitialization.js';
 
 interface InitOptions {
   saga?: boolean;
   thunk?: boolean;
 }
 
-async function initCommand(options: InitOptions) {
+/**
+ * Main function to handle the init command.
+ * @param options - The command options.
+ */
+async function initCommand(options: InitOptions): Promise<void> {
   try {
     const isTypeScriptConfigured = await checkForTypeScript();
 
@@ -26,70 +24,8 @@ async function initCommand(options: InitOptions) {
       process.exit(1);
     }
 
-    let stateManagement = '';
-    let framework = '';
-
-    // Handle options when --saga or --thunk is passed directly
-    if (options.saga || options.thunk) {
-      framework = 'react';
-      stateManagement = options.saga ? 'reduxSaga' : 'reduxThunk';
-
-      // Automatically check for previous usage for React since saga and thunk are for React with Redux
-      await checkForPreviousUsage(framework);
-
-      // Setup Redux store and write the configuration file
-      await setupRedux(
-        {
-          middleware: stateManagement as 'reduxSaga' | 'reduxThunk',
-        },
-        'todo'
-      );
-      writeConfigFile({ framework, stateManagement });
-    } else {
-      // Let user choose framework when no flag is passed
-      framework = await chooseFramework();
-
-      if (framework === 'react') {
-        await checkForPreviousUsage(framework);
-
-        // Let user choose state management tool if no flag was passed
-        stateManagement = await chooseStateManagement();
-
-        if (
-          stateManagement === 'reduxSaga' ||
-          stateManagement === 'reduxThunk'
-        ) {
-          const middleware =
-            stateManagement === 'reduxSaga' ? 'reduxSaga' : 'reduxThunk';
-
-          // Setup Redux store and write the configuration file
-          await setupRedux(
-            {
-              middleware: middleware as 'reduxSaga' | 'reduxThunk',
-            },
-            'todo'
-          );
-          writeConfigFile({ framework, stateManagement });
-        } else {
-          console.log(
-            chalk.yellow(
-              'More state management options are coming soon. Please select Redux Saga or Redux Thunk for now.'
-            )
-          );
-          process.exit(1);
-        }
-      } else {
-        // If other frameworks are selected, exit as they are not yet implemented
-        console.log(
-          chalk.red(
-            'Other frameworks are coming soon. You can only choose React for now.'
-          )
-        );
-        process.exit(1);
-      }
-    }
+    await handleFrameworkInitialization(options);
   } catch (error: unknown) {
-    // Error handling for user exiting prompt or other unexpected errors
     if (
       error instanceof Error &&
       error.message.includes('User force closed the prompt')
