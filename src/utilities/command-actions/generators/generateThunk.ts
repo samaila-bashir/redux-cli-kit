@@ -47,6 +47,21 @@ export async function generateThunk(
   }
 }
 
+/**
+ * Generates or updates a thunk action in a Redux slice file.
+ *
+ * @param {string} modelName - The name of the model for which the slice is being created or updated.
+ * @param {string} action - The name of the thunk action to be added.
+ * @param {boolean} sliceFileExists - Indicates whether the slice file already exists.
+ * @param {string} sliceDir - The directory path where the slice file should be located.
+ * @param {string} sliceFilePath - The full file path of the slice file.
+ * @returns {Promise<void>}
+ *
+ * @description
+ * If the slice file exists, this function reads the existing code, generates new thunk code,
+ * and updates the file with the new action. If the slice file doesn't exist, it creates a new
+ * slice file with the model and adds the specified thunk action to it.
+ */
 async function generateOrUpdateThunkWithAction(
   modelName: string,
   action: string,

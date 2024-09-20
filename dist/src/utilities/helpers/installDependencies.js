@@ -1,6 +1,12 @@
 import chalk from 'chalk';
 import { execa } from 'execa';
-// Function to install dependencies based on the state management choice
+/**
+ * Installs Redux-related dependencies based on the chosen state management option.
+ *
+ * @param {string} stateManagement - The chosen state management option ('reduxSaga' or 'reduxThunk').
+ * @returns {Promise<void>} A promise that resolves when the installation is complete.
+ * @throws Will throw an error if the npm installation fails.
+ */
 async function installDependencies(stateManagement) {
     const basePackages = [
         'redux',
