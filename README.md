@@ -173,7 +173,7 @@ This will set up the Redux Provider along with PersistGate to ensure state persi
 After setting up the Redux Provider, to see the sample Todo app generated, import the component in your `App.tsx` file like this:
 
 ```tsx
-import TodoComponent from './todos';
+import TodoComponent from './components/Todo';
 
 const App = () => {
   return <TodoComponent />;
