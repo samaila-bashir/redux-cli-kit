@@ -118,7 +118,7 @@ Since you will be running CLI commands frequently, you can add `seck` to your sc
 npx seck init
 ```
 
-#### Alternativel, You Can Initialize Redux Store with Saga:
+#### Alternatively, You Can Initialize Redux Store with Saga:
 
 ```bash
 seck init --saga
